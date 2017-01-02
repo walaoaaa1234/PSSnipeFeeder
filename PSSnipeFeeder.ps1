@@ -9,9 +9,14 @@
         $listener.Start()
         write-host "Listening at $($url)"
         $routes = @{
-        "/" = { return (get-content -Path "$($env:TMP)\poke.json" ) }
+        "/" = { return ( $content) }
         }
         while ($listener.IsListening) {
+            if ((test-path -Path "$($env:TMP)\poke.json" ) ) {
+                $content = get-content -Path "$($env:TMP)\poke.json"
+            } else {
+                $content=""
+            }
             $context = $listener.GetContext()
             $requestUrl = $context.Request.Url
             $response = $context.Response
