@@ -41,10 +41,12 @@ StartHttp
 
 $pokemonspool=@()
 
+    
 do {
-   if ( [System.Windows.Forms.Clipboard]::GetText() -ne ""  )    
+   $data = Get-Clipboard -Format Text -TextFormatType Text -ErrorAction SilentlyContinue
+   if ( $data -ne ""  )    
 {    
-    $clip = [System.Windows.Forms.Clipboard]::GetText()
+    $clip = $data
     $clip = $clip -ireplace "\r\n",""
     $clip = $clip.trim()
 }
