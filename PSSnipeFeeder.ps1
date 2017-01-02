@@ -63,7 +63,7 @@ do {
    $data = Get-Clipboard -Format Text -TextFormatType Text -ErrorAction SilentlyContinue
    if ( $data -ne ""  )    
 {    
-    $clip = $data
+    $clip = ($data -split "\r\n")[0]
     $clip = $clip -ireplace "\r\n",""
     $clip = $clip.trim()
 }
