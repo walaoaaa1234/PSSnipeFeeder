@@ -1,7 +1,8 @@
-﻿$httpport = 5000
-function StartHttp {
+﻿function StartHttp {
   Start-Job -ScriptBlock {
+    $httpport = 5000
     $url = "http://127.0.0.1:$($httpport)/"
+    write-host "Listening at $($url)"
     $listener = New-Object System.Net.HttpListener
     $listener.Prefixes.Add($url)
     #$listener.Prefixes.Add("http://+:5555/")
