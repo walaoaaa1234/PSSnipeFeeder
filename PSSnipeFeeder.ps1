@@ -71,7 +71,7 @@ do {
    if(  ($clip -ne $lastclip) -and ($clip.Length -ge 10) ) {
    if (($clip.Substring(0,10) -ieq 'msniper://') -or ($clip.Substring(0,10) -ieq 'pokesniper') ) {
         $coll = $clip -isplit "\/"
-        $clip
+        write-host "Added $($clip) to list"
         if ($clip.Substring(0,14) -ieq 'pokesniper2://') {
             $pokename =  $coll[2]
             $pokecoords = $coll[3]
@@ -94,7 +94,12 @@ do {
             }
         }
         $pokemonspool = $newpokemonspool
-        $pokemonspool | ConvertTo-Json -Depth 3  |Out-File -FilePath "$($env:TMP)\poke.json" 
+        $content = $pokemonspool | ConvertTo-Json -Depth 3  
+        write-host ""
+        write-host "Pokemons serving this moment: "
+        Write-Host $content
+        write-host ""
+        $content |Out-File -FilePath "$($env:TMP)\poke.json" 
     }
    }
    $lastclip = $clip
