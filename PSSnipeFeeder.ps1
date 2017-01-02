@@ -1,41 +1,46 @@
 ﻿function StartHttp {
-  Start-Job -ScriptBlock {
+  Start-Job -name httpjob -ScriptBlock {
     $httpport = 5000
     $url = "http://127.0.0.1:$($httpport)/"
-    write-host "Listening at $($url)"
     $listener = New-Object System.Net.HttpListener
     $listener.Prefixes.Add($url)
     #$listener.Prefixes.Add("http://+:5555/")
-    $listener.Start()
-
-    $routes = @{
-    "/" = { return (get-content -Path "$($env:TMP)\poke.json" ) }
-    }
-    while ($listener.IsListening) {
-        $context = $listener.GetContext()
-        $requestUrl = $context.Request.Url
-        $response = $context.Response
-        $localPath = $requestUrl.LocalPath
-        $route = $routes.Get_Item($requestUrl.LocalPath)
-
-        if ($route -eq $null)
-        {
-            $response.StatusCode = 404
+    try {
+        $listener.Start()
+        write-host "Listening at $($url)"
+        $routes = @{
+        "/" = { return (get-content -Path "$($env:TMP)\poke.json" ) }
         }
-        else
-        {
-            $content = & $route
-            $buffer = [System.Text.Encoding]::UTF8.GetBytes($content)
-            $response.ContentLength64 = $buffer.Length
-            $response.OutputStream.Write($buffer, 0, $buffer.Length)
+        while ($listener.IsListening) {
+            $context = $listener.GetContext()
+            $requestUrl = $context.Request.Url
+            $response = $context.Response
+            $localPath = $requestUrl.LocalPath
+            $route = $routes.Get_Item($requestUrl.LocalPath)
+
+            if ($route -eq $null)
+            {
+                $response.StatusCode = 404
+            }
+            else
+            {
+                $content = & $route
+                $buffer = [System.Text.Encoding]::UTF8.GetBytes($content)
+                $response.ContentLength64 = $buffer.Length
+                $response.OutputStream.Write($buffer, 0, $buffer.Length)
+            }
+            $response.Close()
+            $responseStatus = $response.StatusCode
         }
-        $response.Close()
-        $responseStatus = $response.StatusCode
-
-
+    } catch {
+        Write-Host "Error :  $($_.Exception.Message)"
     }
   }
 }
+
+
+get-job -Name httpjob -ErrorAction SilentlyContinue | Stop-Job | Out-Null
+get-job -Name httpjob -ErrorAction SilentlyContinue | remove-job | Out-Null
 
 StartHttp
 
@@ -43,6 +48,13 @@ $pokemonspool=@()
 
     
 do {
+   if ( (get-job -Name httpjob).State -ne "Running" ) {
+        Write-Host "Listener doesn't work. Please investigate. Exiting. First kill all powershell.exe processes and try again" 
+        write-host "error message from listener: " 
+        Receive-job -Name httpjob
+        break;
+   }
+   Receive-Job -Name httpjob -ErrorAction SilentlyContinue | Out-Null
    $data = Get-Clipboard -Format Text -TextFormatType Text -ErrorAction SilentlyContinue
    if ( $data -ne ""  )    
 {    
@@ -52,7 +64,7 @@ do {
 }
    #$clip =  Get-Clipboard 
    if(  ($clip -ne $lastclip) -and ($clip.Length -ge 10) ) {
-   if (($clip.Substring(0,10) -ieq 'msniper://') -or ($clip.Substring(0,14) -ieq 'pokesniper2://') ) {
+   if (($clip.Substring(0,10) -ieq 'msniper://') -or ($clip.Substring(0,10) -ieq 'pokesniper') ) {
         $coll = $clip -isplit "\/"
         $clip
         if ($clip.Substring(0,14) -ieq 'pokesniper2://') {
