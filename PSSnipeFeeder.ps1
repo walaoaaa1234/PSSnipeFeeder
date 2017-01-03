@@ -75,6 +75,10 @@ do {
         if ($clip.Substring(0,14) -ieq 'pokesniper2://') {
             $pokename =  $coll[2]
             $pokecoords = $coll[3]
+            if ($coll.count -gt 4) {
+                $EncounterId=$coll[4]
+                $SpawnPointId=$coll[5]
+            }
         }
         if ($clip.Substring(0,10) -ieq 'msniper://') {
             $pokename =  $coll[2]
@@ -86,6 +90,13 @@ do {
         $tmp | Add-Member -type NoteProperty -name latitude -Value (($pokecoords -split ",")[0].Trim())
         $tmp | Add-Member -type NoteProperty -name longitude -Value (($pokecoords -split ",")[1].Trim())
         $tmp | Add-Member -type NoteProperty -name expiration -Value ([int64](((Get-Date).AddMinutes(3)-(get-date "1/1/1970")).TotalMilliseconds))
+        if ($EncounterId -ne $Null) {
+            if ($SpawnPointId -notlike "*-*") {
+                $tmp | Add-Member -type NoteProperty -name encounter -Value ($EncounterId)
+                $tmp | Add-Member -type NoteProperty -name spawnpoint -Value $SpawnPointId
+            }
+        }
+
         $pokemonspool+=$tmp
         $newpokemonspool=@()
         foreach ($record in  $pokemonspool) {
