@@ -6,7 +6,12 @@ Powershell script to feed PokemonGo-Bot with sniping information
 #WARNING#
 Runninng the script will change msniper:// and pokesniper2:// protocols registration. If you do use PokeSniper software or Necrobot, they will not get sniping information when you click on button on sniping websites
 
+#- INSTALLATIION
+run installLibs.bat to download required dlls
+
 #- [1. Configuration](#Configuration)
+
+Edit first line in scripts\PSSnipeFeeder.ps1 and provide a path to your PokemonGo-Bot auth file (syntax like here: https://github.com/pogarek/PokemonGo-Bot/blob/dev/configs/auth.json.example )
 
 If you need, change the default (5000) port in PSSnipeFeeder.ps1 
 
