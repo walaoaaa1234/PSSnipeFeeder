@@ -4,7 +4,7 @@
 Powershell script to feed PokemonGo-Bot with sniping information
 
 #WARNING#
-Runninng the script will change msniper:// and pokesniper2:// protocols registration. If you do use  Necrobot, they will not get sniping information when you click on button on sniping websites
+Runninng the script will change msniper:// protocol registration. If you do use  Necrobot, they will not get sniping information when you click on button on sniping websites
 
 #- [1. Configuration](#Configuration)
 
