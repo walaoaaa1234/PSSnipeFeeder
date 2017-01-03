@@ -100,8 +100,6 @@ do {
                 $tmp | Add-Member -type NoteProperty -name spawnpoint -Value $SpawnPointId
             }
         }
-
-        $pokemonspool+=$tmp
         $newpokemonspool=@()
         foreach ($record in  $pokemonspool) {
             if ($record.expiration -gt (([int64](((Get-Date)-(get-date "1/1/1970")).TotalMilliseconds))) ) {
@@ -109,6 +107,12 @@ do {
             }
         }
         $pokemonspool = $newpokemonspool
+        $pokemonspool+=$tmp
+        if ($pokemonspool.count -eq1) {
+            $pokemonspool+=$pokemonspool[0]
+        }
+        
+
         $content = $pokemonspool | ConvertTo-Json -Depth 3  
         write-host ""
         write-host "Pokemons serving this moment: "
