@@ -69,7 +69,8 @@ do {
 }
    #$clip =  Get-Clipboard 
    if(  ($clip -ne $lastclip) -and ($clip.Length -ge 10) ) {
-   if (($clip.Substring(0,10) -ieq 'msniper://') -or ($clip.Substring(0,10) -ieq 'pokesniper') ) {
+   #if (($clip.Substring(0,10) -ieq 'msniper://') -or ($clip.Substring(0,10) -ieq 'pokesniper') ) {
+   if (($clip.Substring(0,10) -ieq 'msniper://') ) {
         $coll = $clip -isplit "\/"
         write-host "Added $($clip) to list"
         if ($clip.Substring(0,14) -ieq 'pokesniper2://') {
@@ -83,10 +84,13 @@ do {
         if ($clip.Substring(0,10) -ieq 'msniper://') {
             $pokename =  $coll[2]
             $pokecoords = $coll[5]
+            $Encounterid=$coll[3]
+            $SpawnPointid=$coll[4]
+            $iv=$coll[6]
         }
         $tmp = New-Object System.Object
         $tmp | Add-Member -type NoteProperty -name name -Value ($pokename.Trim())
-        #$tmp | Add-Member -type NoteProperty -name iv -Value ([int]$([math]::Round($coll[6])))
+        $tmp | Add-Member -type NoteProperty -name iv -Value ([int]$([math]::Round($coll[6])))
         $tmp | Add-Member -type NoteProperty -name latitude -Value (($pokecoords -split ",")[0].Trim())
         $tmp | Add-Member -type NoteProperty -name longitude -Value (($pokecoords -split ",")[1].Trim())
         $tmp | Add-Member -type NoteProperty -name expiration -Value ([int64](((Get-Date).AddMinutes(3)-(get-date "1/1/1970")).TotalMilliseconds))
