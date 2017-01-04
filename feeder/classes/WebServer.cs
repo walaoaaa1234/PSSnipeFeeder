@@ -34,6 +34,7 @@ namespace PSSniper
             app.Run(async (context) =>
             {
                 string path = context.Request.Path;
+                //Console.WriteLine("request : "+path);
 
                 if (path == "/") {
                     context.Response.ContentType = "application/json";
@@ -43,6 +44,7 @@ namespace PSSniper
        
                 if (path.StartsWith("/addpokemon")) {
                     PokemonInfo Pokemon = new PokemonInfo();
+                    path = path.Replace(System.Environment.NewLine, "");
                     string[] strings = Regex.Split(path,"/");
                 if (strings[2]== "msniper:") {
                     Pokemon.PokemonName = strings[4];
@@ -52,7 +54,7 @@ namespace PSSniper
                     culture.NumberFormat.NumberDecimalSeparator = ".";
                     Pokemon.Latitude = Convert.ToDouble(Regex.Split(strings[7],",")[0],culture);
                     Pokemon.Longtitude = Convert.ToDouble(Regex.Split(strings[7],",")[1],culture);
-                    Pokemon.IV =  Convert.ToDouble(strings[8]);
+                    Pokemon.IV =  Convert.ToDouble(strings[8],culture);
                 }
                 if (strings[2]=="pokesniper2:") {
                     Pokemon.PokemonName = strings[4];

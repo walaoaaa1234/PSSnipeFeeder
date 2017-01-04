@@ -12,7 +12,7 @@ namespace PSSniper
     {
         public static List<PokemonInfo> Pokemons = new List<PokemonInfo>() ;
 
-        private static Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
+        private static Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Directory.GetCurrentDirectory()+@"\config.json"));
 
         public static void AddPokemon(PokemonInfo Pokemon) {
            foreach (PokemonInfo poke in Pokemons) {
