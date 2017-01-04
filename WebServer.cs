@@ -9,18 +9,17 @@ using System.IO;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-namespace KestrelDemo
+namespace PSSniper
 {
-    public class Startup
+    public class WebServer
     {
         public static string Address;
-        public Startup(IHostingEnvironment env)
+        public WebServer(IHostingEnvironment env)
         {
             Configuration = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
                 .Build();
         }
-
         public IConfigurationRoot Configuration { get; private set; }
 
         #region snippet_Configure
@@ -31,7 +30,6 @@ namespace KestrelDemo
             var serverAddressesFeature = app.ServerFeatures.Get<IServerAddressesFeature>();
             Address =  serverAddressesFeature.Addresses.ElementAt(0);
             app.UseStaticFiles();
-
             app.Run(async (context) =>
             {
                 string path = context.Request.Path;
@@ -45,7 +43,8 @@ namespace KestrelDemo
                 if (path.StartsWith("/addpokemon")) {
                     string[] tmp = Regex.Split(path, "/");
                     string PokemonName = tmp[2];
-                    Program.AddPokemon(PokemonName);
+                    PokemonInfo Pokemon = new PokemonInfo;
+                    Program.AddPokemon(Pokemon);
                 }
                 if (path == "/register") {
                     context.Response.ContentType = "text/html";
@@ -68,7 +67,6 @@ window.navigator.registerProtocolHandler(
                     string content =@"<a href=""msniper3://aaaa/bbbbb/cccc"">click</a>";
                     await context.Response.WriteAsync(content);
                 }
-
             });
         }
         #endregion

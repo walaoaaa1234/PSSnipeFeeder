@@ -3,12 +3,12 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace KestrelDemo
+namespace PSSniper
 {
     /// <summary>
     /// Executing the "dotnet run command in the application folder will run this app.
     /// </summary>
-    public class WebServer
+    public class WebServerWrapper
     {
         public static string Server;
         public static string Port;
@@ -27,7 +27,7 @@ namespace KestrelDemo
             var builder = new WebHostBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory()+"/www")
                 .UseConfiguration(config)
-                .UseStartup<Startup>()
+                .UseStartup<WebServer>()
                 .UseKestrel(options =>
                 {
                     if (config["threadCount"] != null)
@@ -38,7 +38,7 @@ namespace KestrelDemo
                 .UseUrls("http://"+NameOrIp+":"+Port);
 
             var host = builder.Build();
-            Console.WriteLine("Listening at: "+Startup.Address);
+            Console.WriteLine("Listening at: "+WebServer.Address);
             host.Start();
             do {}
             while (true);
