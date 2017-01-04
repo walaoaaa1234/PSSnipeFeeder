@@ -2,19 +2,20 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.IO;
-using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using System.Text;
+using System;
+using System.Globalization;
 namespace PSSniper
 {
-    public class WebServer
+    public class WebServerStartup
     {
         public static string Address;
-        public WebServer(IHostingEnvironment env)
+        public WebServerStartup(IHostingEnvironment env)
         {
             Configuration = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
@@ -35,18 +36,37 @@ namespace PSSniper
                 string path = context.Request.Path;
 
                 if (path == "/") {
-                    string jsonpath = Directory.GetCurrentDirectory()+@"\www\poke.json";
-                    string  a =System.IO.File.ReadAllText(jsonpath);
                     context.Response.ContentType = "application/json";
+                    string a = JsonConvert.SerializeObject(Program.Pokemons, Formatting.Indented);
                     await context.Response.WriteAsync(a);
                 }
+       
                 if (path.StartsWith("/addpokemon")) {
-                    string[] tmp = Regex.Split(path, "/");
-                    string PokemonName = tmp[2];
-                    PokemonInfo Pokemon = new PokemonInfo;
-                    Program.AddPokemon(Pokemon);
+                    PokemonInfo Pokemon = new PokemonInfo();
+                    string[] strings = Regex.Split(path,"/");
+                if (strings[2]== "msniper:") {
+                    Pokemon.PokemonName = strings[4];
+                    Pokemon.EncounterId = Convert.ToUInt64(strings[5]);
+                    Pokemon.SpawnpointId = strings[6];
+                    CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+                    culture.NumberFormat.NumberDecimalSeparator = ".";
+                    Pokemon.Latitude = Convert.ToDouble(Regex.Split(strings[7],",")[0],culture);
+                    Pokemon.Longtitude = Convert.ToDouble(Regex.Split(strings[7],",")[1],culture);
+                    Pokemon.IV =  Convert.ToDouble(strings[8]);
                 }
-                if (path == "/register") {
+                if (strings[2]=="pokesniper2:") {
+                    Pokemon.PokemonName = strings[4];
+                    CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+                    culture.NumberFormat.NumberDecimalSeparator = ".";
+                    Pokemon.Latitude = Convert.ToDouble(Regex.Split(strings[5],",")[0],culture);
+                    Pokemon.Longtitude = Convert.ToDouble(Regex.Split(strings[5],",")[1],culture);
+                }
+                if (Pokemon.PokemonName !=null) {
+                   Program.AddPokemon(Pokemon);
+                }
+            }
+                
+                if (path == "/registerDISABLED") {
                     context.Response.ContentType = "text/html";
                     string content=$@"
 <!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.01//EN"">

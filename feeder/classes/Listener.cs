@@ -25,9 +25,9 @@ namespace PSSniper
                 .Build();
 
             var builder = new WebHostBuilder()
-                .UseContentRoot(Directory.GetCurrentDirectory()+"/www")
+                .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseConfiguration(config)
-                .UseStartup<WebServer>()
+                .UseStartup<WebServerStartup>()
                 .UseKestrel(options =>
                 {
                     if (config["threadCount"] != null)
@@ -38,7 +38,7 @@ namespace PSSniper
                 .UseUrls("http://"+NameOrIp+":"+Port);
 
             var host = builder.Build();
-            Console.WriteLine("Listening at: "+WebServer.Address);
+            Console.WriteLine("Listening at: "+WebServerStartup.Address);
             host.Start();
             do {}
             while (true);

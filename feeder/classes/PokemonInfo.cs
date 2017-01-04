@@ -10,9 +10,11 @@ namespace PSSniper
         public double Latitude;
         public double Longtitude;
         public double IV;
-        public Int64 EncounterId;
+        public ulong EncounterId;
         public string SpawnpointId;
-        public DateTime expiration; 
+        public Int64 expiration; 
+
+        public DateTime expirationdt; 
 
         public PokemonInfo () {
 

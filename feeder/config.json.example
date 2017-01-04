@@ -1,0 +1,9 @@
+{
+    "auth_service": "ptc",
+    "//auth_service": "google",
+    "username": "username",
+    "password": "password",
+    "hashkey" : "hashkey",
+    "webserveraddress": "127.0.0.1",
+    "webserverport": "5001"
+}
