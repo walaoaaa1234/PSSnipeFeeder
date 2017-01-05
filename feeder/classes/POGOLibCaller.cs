@@ -134,31 +134,26 @@ namespace PSSniper
                 
                 if (catchable.Count() > 0) {
                      //POGOProtos.Map.Pokemon.MapPokemon a = catchable.ElementAt(0);
-                     IEnumerable<POGOProtos.Map.Pokemon.MapPokemon> PokemonRequested = 
-                        catchable.SelectMany(p=> catchable.Where(w => w.PokemonId.ToString() == pokemon.PokemonName ))
-                                                           .Where(w => w.Latitude == pokemon.Latitude )
-                                                           .Where(w => w.Longitude == pokemon.Longtitude);
-                     if  (PokemonRequested.Count() >0 ) {
+                     POGOProtos.Map.Pokemon.MapPokemon PokemonRequested = 
+                        catchable.SelectMany(p=> catchable.Where(w => w.PokemonId.ToString() == pokemon.PokemonName )).FirstOrDefault();
+                                                           //.Where(w => w.Latitude == pokemon.Latitude )
+                                                           //.Where(w => w.Longitude == pokemon.Longtitude);
+                     if  (PokemonRequested.EncounterId != 0 ) {
                          string a = "";
-                         POGOProtos.Map.Pokemon.MapPokemon poketmp = PokemonRequested.ElementAt(0);
+                         POGOProtos.Map.Pokemon.MapPokemon poketmp = PokemonRequested;
                          pokemon.EncounterId = poketmp.EncounterId;
                          pokemon.SpawnpointId = poketmp.SpawnPointId;
 
                      }
 
                 }
-                
-                
-
-                
-
             }
             else
             {
-                //Logger.Info("No fort found nearby.");
+                Console.WriteLine("No Fort data found. Captcha soft/ip/hard ban? Check account");
             }
 
-            System.Threading.Thread.Sleep(5000);
+            //System.Threading.Thread.Sleep(5000);
             session.Shutdown();
             session.Dispose();
 
