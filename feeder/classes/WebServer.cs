@@ -34,7 +34,7 @@ namespace PSSniper
             app.Run(async (context) =>
             {
                 string path = context.Request.Path;
-                //Console.WriteLine("request : "+path);
+                Console.WriteLine("request : "+path);
 
                 if (path == "/") {
                     context.Response.ContentType = "application/json";
