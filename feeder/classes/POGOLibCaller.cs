@@ -127,7 +127,7 @@ namespace PSSniper
            //var SelectMany(c => c.CatchablePokemons)     
 
             var closestFort = session.Map.GetFortsSortedByDistance().FirstOrDefault();
-            //session.Map
+            
             if (closestFort != null)
             {
                 IEnumerable<POGOProtos.Map.Pokemon.MapPokemon> catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);

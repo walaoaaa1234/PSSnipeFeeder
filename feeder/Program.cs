@@ -15,10 +15,14 @@ namespace PSSniper
         private static Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Directory.GetCurrentDirectory()+@"\config.json"));
 
         public static void AddPokemon(PokemonInfo Pokemon) {
-           foreach (PokemonInfo poke in Pokemons) {
-               if (poke.expirationdt < DateTime.Now)  {
-                   Pokemons.Remove(poke);
-               }
+           try {
+            foreach (PokemonInfo poke in Pokemons) {
+                if (poke.expirationdt < DateTime.Now)  {
+                    Pokemons.Remove(poke);
+                }
+            } 
+            Console.WriteLine("cleaned up expired pokemons");
+           } catch {
            }
            if (Pokemons.Contains(Pokemon) == false) {
                if ((Pokemon.EncounterId ==0 ) | (Pokemon.SpawnpointId == null)) {
@@ -32,7 +36,9 @@ namespace PSSniper
                     Pokemon.expiration = Convert.ToInt64((Pokemon.expirationdt -DateTime.Parse("1/1/1970")).TotalMilliseconds);
                     Pokemons.Add(Pokemon);
                      Console.WriteLine(string.Format("Added to list: {0}:{1},{2}",Pokemon.PokemonName,Pokemon.Latitude,Pokemon.Longtitude ));
-           }
+               } else {
+                   Console.WriteLine("Pokemon not added . Encounter and/or SpawnpointId are empty");
+               }
                       
            if (Pokemons.Count ==0 ) {
                PokemonInfo tmppoke = new PokemonInfo();
