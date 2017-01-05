@@ -22,20 +22,20 @@ dotnet restore
 2. Update your bot configuration so it can call your url (http://127.0.0.1:5000/ by default)
 For example for PokemonGo-Bot add below to Sniper task
 ```
-  {
+ 				{
 				  "enabled": true,
 					"url": "http://127.0.0.1:5000/",
 					"timeout": 3,
 					"mappings": {
-						"name": { "param": "name" },
-						"iv": { "param": "iv" },
-						"latitude": { "param": "latitude" },
-						"longitude": { "param": "longitude" },
-			            "spawnpoint": { "param": "spawnpoint" },
-						"encounter": { "param": "encounter" },
+           					"iv": { "param": "IV" },
+						"name": { "param": "PokemonName" },
+						"latitude": { "param": "Latitude" },
+						"longitude": { "param": "Longtitude" },
+            					"spawnpoint": { "param": "SpawnpointId" },
+						"encounter": { "param": "EncounterId" },
 						"expiration": { "param": "expiration", "format": "milliseconds" }
 					}
-				},
+				}
 ```
 
 
