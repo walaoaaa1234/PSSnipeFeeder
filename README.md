@@ -4,16 +4,20 @@ It can on any system (Windows/Linux/MacOS) ! However the easier way to provide i
 
 # Installation and update
 1. Install .net Core: https://www.microsoft.com/net/download/core#/current
-2. git clone https://github.com/pogarek/PSSnipeFeeder 
-3. dotnet restore
+2. Run commands: 
+```
+git clone https://github.com/pogarek/PSSnipeFeeder 
+dotnet restore
+```
 
-# Update
-1. git pull
-2. dotnet restore
+##Update
+```
+git pull
+dotnet restore
+```
 
+# Configuration
 
-
-#- [1. Configuration](#Configuration)
 
 
 Then add below to Sources in Sniper task configuration in your PokemonGo-Bot configuration:
