@@ -1,3 +1,4 @@
+``
 # PSSnipeFeeder
 .Net core binary to feed PokemonGo-Bot (any bot which can read json files) with sniping information
 It can on any system (**Windows/Linux/MacOS**) ! 
@@ -41,6 +42,12 @@ For example for PokemonGo-Bot add below to Sniper task
 
 
 #Usage
+
+````
+cd feeder
+dotnet run
+```
+
 Open a URL (in browser for example) with address:
 
 ## using msniper format
