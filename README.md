@@ -1,6 +1,7 @@
-# PSSnipeFeeder
+*# PSSnipeFeeder
 .Net core binary to feed PokemonGo-Bot (any bot which can read json files) with sniping information
-It can on any system (Windows/Linux/MacOS) ! However the easier way to provide information about Pokemons is on Windows (read below)
+It can on any system (**Windows/Linux/MacOS**) ! 
+*However on Windows you can click on links on sniping website to feed your bot (read below)*
 
 # Installation and update
 1. Install .net Core: https://www.microsoft.com/net/download/core#/current
