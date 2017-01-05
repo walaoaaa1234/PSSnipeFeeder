@@ -27,13 +27,13 @@ For example for PokemonGo-Bot add below to Sniper task
 					"url": "http://127.0.0.1:5000/",
 					"timeout": 3,
 					"mappings": {
-           					"iv": { "param": "IV" },
-						"name": { "param": "PokemonName" },
-						"latitude": { "param": "Latitude" },
-						"longitude": { "param": "Longtitude" },
-            					"spawnpoint": { "param": "SpawnpointId" },
-						"encounter": { "param": "EncounterId" },
-						"expiration": { "param": "expiration", "format": "milliseconds" }
+           			"iv": { "param": "IV" },
+					"name": { "param": "PokemonName" },
+					"latitude": { "param": "Latitude" },
+					"longitude": { "param": "Longtitude" },
+            		"spawnpoint": { "param": "SpawnpointId" },
+					"encounter": { "param": "EncounterId" },
+					"expiration": { "param": "expiration", "format": "milliseconds" }
 					}
 				}
 ```
