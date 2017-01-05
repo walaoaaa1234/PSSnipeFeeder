@@ -4,10 +4,11 @@ It can on any system (**Windows/Linux/MacOS**) !
 *However on Windows you can click on links on sniping website to feed your bot (read below)*
 
 # Installation and update
-1. Install .net Core: https://www.microsoft.com/net/download/core#/current
+1. Install .net Core: https://www.microsoft.com/net/download/core#/current/sdk (SDK)
 2. Run commands: 
 ```
-git clone https://github.com/pogarek/PSSnipeFeeder 
+git clone https://github.com/pogarek/PSSnipeFeeder
+cd PSSnipeFeeder
 dotnet restore
 ```
 
