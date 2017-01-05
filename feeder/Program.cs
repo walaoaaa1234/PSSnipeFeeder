@@ -16,11 +16,15 @@ namespace PSSniper
 
         public static void AddPokemon(PokemonInfo Pokemon) {
            try {
+            List<PokemonInfo> newlist = new List<PokemonInfo>();
+
             foreach (PokemonInfo poke in Pokemons) {
-                if (poke.expirationdt < DateTime.Now)  {
-                    Pokemons.Remove(poke);
+                if (poke.expirationdt > DateTime.Now)  {
+                   newlist.Add(poke);
                 }
-            } 
+            }
+            Pokemons = newlist;
+             
             //Console.WriteLine("cleaned up expired pokemons");
            } catch {
            }
