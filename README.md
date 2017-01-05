@@ -1,14 +1,20 @@
-
-
 # PSSnipeFeeder
-Powershell script to feed PokemonGo-Bot with sniping information
+.Net core binary to feed PokemonGo-Bot (any bot which can read json files) with sniping information
+It can on any system (Windows/Linux/MacOS) ! However the easier way to provide information about Pokemons is on Windows (read below)
 
-#WARNING#
-Runninng the script will change msniper:// protocol registration. If you do use  Necrobot, they will not get sniping information when you click on button on sniping websites
+# Installation and update
+1. Install .net Core: https://www.microsoft.com/net/download/core#/current
+2. git clone https://github.com/pogarek/PSSnipeFeeder 
+3. dotnet restore
+
+# Update
+1. git pull
+2. dotnet restore
+
+
 
 #- [1. Configuration](#Configuration)
 
-If you need, change the default (5000) port in PSSnipeFeeder.ps1 
 
 Then add below to Sources in Sniper task configuration in your PokemonGo-Bot configuration:
 ```
