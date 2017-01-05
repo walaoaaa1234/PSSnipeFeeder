@@ -21,7 +21,7 @@ namespace PSSniper
                     Pokemons.Remove(poke);
                 }
             } 
-            Console.WriteLine("cleaned up expired pokemons");
+            //Console.WriteLine("cleaned up expired pokemons");
            } catch {
            }
            if (Pokemons.Contains(Pokemon) == false) {
