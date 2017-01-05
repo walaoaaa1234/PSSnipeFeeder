@@ -17,10 +17,9 @@ dotnet restore
 ```
 
 # Configuration
-
-
-
-Then add below to Sources in Sniper task configuration in your PokemonGo-Bot configuration:
+1. Copy feeder\config.json.example to feeder\config.json and edit it. 
+2. Update your bot configuration so it can call your url (http://127.0.0.1:5000/ by default)
+For example for PokemonGo-Bot add below to Sniper task
 ```
   {
 				  "enabled": true,
@@ -28,6 +27,7 @@ Then add below to Sources in Sniper task configuration in your PokemonGo-Bot con
 					"timeout": 3,
 					"mappings": {
 						"name": { "param": "name" },
+						"iv": { "param": "iv" },
 						"latitude": { "param": "latitude" },
 						"longitude": { "param": "longitude" },
 			            "spawnpoint": { "param": "spawnpoint" },
@@ -38,22 +38,39 @@ Then add below to Sources in Sniper task configuration in your PokemonGo-Bot con
 ```
 
 
-#- [2. Usage](#Usage)
-Run run_me.bat .
+#Usage
+Open a URL (in browser for example) with address:
 
-Then open any website which has buttons for Msniper. Click on the button to snipe the pokemon that you want.
-Additionaly in edit text editor you can prepare information in format like below, to ask your bot to snipe the pokemon.
-Just prepare a text in format
-msniper://PokemonName/encounterid/spawnpointid/latitude,longitude/iv  
+## using msniper format
+
+```
+http://webserveraddress:webserverport/addpokemon/msniper://PokemonName/encounterid/spawnpointid/latitude,longitude/iv  
+```
 
 for example:
-msniper://Beedrill/13771894552293369407/3403ff2f5e7/22.330832561292816,114.10366351376578/59.64  
+```
+http://127.0.0.1:5000/addpokemon/msniper://Beedrill/13771894552293369407/3403ff2f5e7/22.330832561292816,114.10366351376578/59.64  
+```
 
-then, just, copy the line to clipboard. The clipboard is monitored by script and, then, information is passed to the bot.
+##using pokesniper2 format: 
+
+```
+http://webserveraddress:webserverport/addpokemon/pokesniper2://PokemonName/latitude,longitude
+```
+
+for example:
+```
+http://127.0.0.1:5000/addpokemon/pokesniper2://Beedrill/22.330832561292816,114.10366351376578
+```
+
+For Pokesnipers2 this software will connect to Pokemons server (sorry, hashkey required)  to gather EncounterId and SpawnLocationsID and to check, if pokemon is there. 
+
+##Windows Only (unless you know how to register protocol handlers msniper:// or pokesniper2:// or another operating system - then let me know by creating an Issue on GitHub)
+
+You can pass information directly to bot from sniping websites, like http://msniper.com or http://pokezzz.com. 
+Just run Windows\runme.bat to register the functionality, then you can click on sniping websites on Msniper or PokeSniper2 buttons. 
 
 Regardless if pokemon was added manually or by pressing the button : it will be added to the bot for period of 3 minutes. 
-
-Please be informed , that during startup of the bot you should have at least two pokemons added (just click on MSniper button on two pokemons, for example on Http://msniper.com )  . Otherwise your bot will say, that response from http://127.0.0.1:5000 (when default port is used) is incorrect and bot will ignore that feed. 
 
 Enjoy!
 
