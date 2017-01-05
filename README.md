@@ -20,7 +20,7 @@ dotnet restore
 ```
 
 # Configuration
-1. Copy feeder\config.json.example to feeder\config.json and edit it. 
+1. Copy feeder\config.json.example to feeder\config.json and edit it. I recommend using a dedicated (with 1st pokemon caught etc) account for the tool. 
 2. Update your bot configuration so it can call your url (http://127.0.0.1:5000/ by default)
 For example for PokemonGo-Bot add below to Sniper task
 ```
