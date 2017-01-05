@@ -138,12 +138,14 @@ namespace PSSniper
                         catchable.SelectMany(p=> catchable.Where(w => w.PokemonId.ToString() == pokemon.PokemonName )).FirstOrDefault();
                                                            //.Where(w => w.Latitude == pokemon.Latitude )
                                                            //.Where(w => w.Longitude == pokemon.Longtitude);
-                     if  (PokemonRequested.EncounterId != 0 ) {
+                     if  (PokemonRequested != null ) {
                          string a = "";
                          POGOProtos.Map.Pokemon.MapPokemon poketmp = PokemonRequested;
                          pokemon.EncounterId = poketmp.EncounterId;
                          pokemon.SpawnpointId = poketmp.SpawnPointId;
 
+                     } else {
+                         string b="";
                      }
 
                 }

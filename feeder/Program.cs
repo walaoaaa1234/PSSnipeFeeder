@@ -24,7 +24,7 @@ namespace PSSniper
                if ((Pokemon.EncounterId ==0 ) | (Pokemon.SpawnpointId == null)) {
                    Pokemon = POGOLibCaller.VerifyPokemon(Pokemon,config) ;
                    if (Pokemon.EncounterId ==0 ) {
-                       Console.WriteLine(string.Format("Pokemon {0} not discovered at location {1} , {2}"),Pokemon.PokemonName, Pokemon.Latitude, Pokemon.Longtitude);
+                       Console.WriteLine(String.Format("Pokemon {0} not discovered at location {1} , {2} ",Pokemon.PokemonName,Pokemon.Latitude,Pokemon.Longtitude));
                    }
                }
                if ((Pokemon.EncounterId >0 ) & (Pokemon.SpawnpointId != null)) {
