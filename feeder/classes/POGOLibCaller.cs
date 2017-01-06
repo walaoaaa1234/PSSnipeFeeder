@@ -83,8 +83,7 @@ namespace PSSniper
             }
 
             // Retrieve the closest fort to your current player coordinates.
-           //var SelectMany(c => c.CatchablePokemons)     
-
+           
             var closestFort = session.Map.GetFortsSortedByDistance().FirstOrDefault();
             /*if (closestFort==null) {
                 int i=1;
@@ -116,7 +115,7 @@ namespace PSSniper
             }
             else
             {
-                Console.WriteLine("No Fort data found. Captcha soft/ip/hard ban? Check account");
+                Console.WriteLine("No Fort data found. Captcha soft/ip/hard ban? Check account, take a rest , etc. ");
             }
 
             //System.Threading.Thread.Sleep(5000);
