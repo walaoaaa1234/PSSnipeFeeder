@@ -10,6 +10,7 @@ namespace PSSniper
         public string hashkey;
         public string webserveraddress;
         public string webserverport;
+        public int minutestoexpire;
         
     }
 }

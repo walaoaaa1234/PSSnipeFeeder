@@ -41,7 +41,7 @@ namespace PSSniper
                    }
                }
                if ((Pokemon.EncounterId >0 ) & (Pokemon.SpawnpointId != null)) {
-                    Pokemon.expirationdt = DateTime.Now.AddMinutes(3);
+                    Pokemon.expirationdt = DateTime.Now.AddMinutes(config.minutestoexpire);
                     Pokemon.expiration = Convert.ToInt64((Pokemon.expirationdt -DateTime.Parse("1/1/1970")).TotalMilliseconds);
                     Pokemons.Add(Pokemon);
                     //Console.WriteLine(string.Format("Added to list: {0}:{1},{2}",Pokemon.PokemonName,Pokemon.Latitude,Pokemon.Longtitude ));
@@ -60,7 +60,7 @@ namespace PSSniper
                tmppoke.Longtitude = 120.59261531771575;
                tmppoke.EncounterId = 13139724800732585298;
                tmppoke.SpawnpointId = "3469343f3d9";
-               tmppoke.expirationdt = DateTime.Now.AddMinutes(3);
+               tmppoke.expirationdt = DateTime.Now.AddMinutes(config.minutestoexpire);
                tmppoke.expiration = Convert.ToInt64((Pokemon.expirationdt -DateTime.Parse("1/1/1970")).TotalMilliseconds);
                Pokemons.Add(tmppoke);
            }
@@ -82,7 +82,7 @@ namespace PSSniper
             tmppoke.Longtitude = 120.59261531771575;
             tmppoke.EncounterId = 13139724800732585298;
             tmppoke.SpawnpointId = "3469343f3d9";
-            tmppoke.expirationdt = DateTime.Now.AddMinutes(3);
+            tmppoke.expirationdt = DateTime.Now.AddMinutes(config.minutestoexpire);
             tmppoke.expiration = Convert.ToInt64((tmppoke.expirationdt -DateTime.Parse("1/1/1970")).TotalMilliseconds);
             AddPokemon(tmppoke);
             //Pokemons.Add(tmppoke);
