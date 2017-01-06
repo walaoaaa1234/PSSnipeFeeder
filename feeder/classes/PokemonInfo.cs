@@ -10,6 +10,11 @@ namespace PSSniper
         public double Latitude;
         public double Longtitude;
         public double IV;
+
+/*        public string Move1="";
+        public string Move2="";
+
+        public int CP;*/
         public ulong EncounterId;
         public string SpawnpointId;
         public Int64 expiration; 

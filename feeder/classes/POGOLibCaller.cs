@@ -12,11 +12,10 @@ using POGOLib.Official.Net.Authentication.Data;
 using POGOProtos.Networking.Requests;
 using POGOProtos.Networking.Requests.Messages;
 using POGOProtos.Networking.Responses;
-using POGOLib.Official.Extensions;
+using POGOProtos.Data;
 using POGOLib.Official.LoginProviders;
 using POGOLib.Official.Util.Hash;
 using POGOLib.Official;
-using LogLevel = POGOLib.Official.Logging.LogLevel;
 using System.Collections.Generic;
 
 namespace PSSniper
@@ -27,6 +26,7 @@ namespace PSSniper
         //private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static PokemonInfo pokemon;
         private static Config config; 
+        //private static int UpdateCounter=0;
 
         public static PokemonInfo VerifyPokemon(PokemonInfo Pokemonl, Config configl) 
         {
@@ -38,48 +38,7 @@ namespace PSSniper
 
         private static async Task Run()
         {
-            // Configure Logger
-            //LogManager.Configuration = new XmlLoggingConfiguration(Path.Combine(Directory.GetCurrentDirectory(), "nlog.xml"));
-
-            //Logging.Logger.RegisterLogOutput((level, message) =>
-            //{
-            //   switch (level)
-            //    {
-            //        case LogLevel.Debug:
-            //            Logger.Debug(message);
-            //            break;
-            //        case LogLevel.Info:
-            //            Logger.Info(message);
-            //            break;
-            //        case LogLevel.Notice:
-            //        case LogLevel.Warn:
-            //            Logger.Warn(message);
-            //            break;
-            //        case LogLevel.Error:
-            //            Logger.Error(message);
-            //            break;
-            //        default:
-            //            throw new ArgumentOutOfRangeException(nameof(level), level, null);
-            //    }
-            //});
-
-            // Initiate console
-            //Logger.Info("Booting up.");
-            //Logger.Info("Type 'q', 'quit' or 'exit' to exit.");
-            //Console.Title = "POGO Demo";
-
-            // Configure hasher - DO THIS BEFORE ANYTHING ELSE!!
-            //
-            //  If you want to use the latest POGO version, you have
-            //  to use the PokeHashHasher. For more information:
-            //  https://talk.pogodev.org/d/51-api-hashing-service-by-pokefarmer
-            //
-            //  You may also not use the PokeHashHasher, it will then use
-            //  the built-in hasher which was made for POGO 0.45.0. 
-            //  Don't forget to use "Configuration.IgnoreHashVersion = true;" too.
-            //
-            //  Expect some captchas in that case..
-
+           
             var pokeHashAuthKey = config.hashkey;
 
             Configuration.Hasher = new PokeHashHasher(pokeHashAuthKey);
@@ -127,28 +86,33 @@ namespace PSSniper
            //var SelectMany(c => c.CatchablePokemons)     
 
             var closestFort = session.Map.GetFortsSortedByDistance().FirstOrDefault();
-            
+            /*if (closestFort==null) {
+                int i=1;
+                do {
+                    Console.WriteLine("repeat fort: "+i.ToString());
+                    await session.RpcClient.RefreshMapObjectsAsync();
+                    closestFort = session.Map.GetFortsSortedByDistance().FirstOrDefault();
+                    //System.Threading.Thread.Sleep(1000);
+                    i++;
+                } while (i<60 & (closestFort == null));
+            }*/
             if (closestFort != null)
             {
-                IEnumerable<POGOProtos.Map.Pokemon.MapPokemon> catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
-                
-                if (catchable.Count() > 0) {
-                     //POGOProtos.Map.Pokemon.MapPokemon a = catchable.ElementAt(0);
-                     POGOProtos.Map.Pokemon.MapPokemon PokemonRequested = 
-                        catchable.SelectMany(p=> catchable.Where(w => w.PokemonId.ToString() == pokemon.PokemonName )).FirstOrDefault();
-                                                           //.Where(w => w.Latitude == pokemon.Latitude )
-                                                           //.Where(w => w.Longitude == pokemon.Longtitude);
-                     if  (PokemonRequested != null ) {
-                         string a = "";
-                         POGOProtos.Map.Pokemon.MapPokemon poketmp = PokemonRequested;
-                         pokemon.EncounterId = poketmp.EncounterId;
-                         pokemon.SpawnpointId = poketmp.SpawnPointId;
-
-                     } else {
-                         string b="";
-                     }
-
-                }
+               IEnumerable<POGOProtos.Map.Pokemon.MapPokemon> catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
+               SearchForPokemon(session,catchable).GetAwaiter().GetResult();
+               if (pokemon.EncounterId == 0) {
+                   int i=1;
+                   do {
+                    //Console.WriteLine ("repeating: "+i.ToString());
+                    await session.RpcClient.RefreshMapObjectsAsync();
+                    //System.Threading.Thread.Sleep(1000);
+                    catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
+                    SearchForPokemon(session,catchable).GetAwaiter().GetResult();
+                    i++;
+                   } while    (i<60 & (pokemon.EncounterId==0) );
+                   //} while    (pokemon.EncounterId==0 );
+               }
+            
             }
             else
             {
@@ -162,7 +126,49 @@ namespace PSSniper
             // Handle quit commands.
             //HandleCommands();
         }
+        private static async Task SearchForPokemon (POGOLib.Official.Net.Session session,  IEnumerable<POGOProtos.Map.Pokemon.MapPokemon> catchable) {
 
+                if (catchable.Count() > 0) {
+                     //POGOProtos.Map.Pokemon.MapPokemon a = catchable.ElementAt(0);
+                     POGOProtos.Map.Pokemon.MapPokemon PokemonRequested = 
+                        catchable.SelectMany(p=> catchable.Where(w => w.PokemonId.ToString() == pokemon.PokemonName )).FirstOrDefault();
+                                                           //.Where(w => w.Latitude == pokemon.Latitude )
+                                                           //.Where(w => w.Longitude == pokemon.Longtitude);
+                     if  (PokemonRequested != null ) {
+                            //string a = "";
+                            try {
+                                var responseDetailsBytes = await session.RpcClient.SendRemoteProcedureCallAsync(new Request
+                                {
+                                    RequestType = RequestType.Encounter,
+                                    RequestMessage = new EncounterMessage
+                                    {
+                                        EncounterId  = PokemonRequested.EncounterId,
+                                        SpawnPointId = PokemonRequested.SpawnPointId,
+                                        PlayerLatitude = PokemonRequested.Latitude,
+                                        PlayerLongitude = PokemonRequested.Longitude
+                                    }.ToByteString()
+                                });
+                                EncounterResponse DetailsResponse = EncounterResponse.Parser.ParseFrom(responseDetailsBytes);
+                                PokemonData pokemondata = DetailsResponse.WildPokemon.PokemonData;
+                                int IvSum = pokemondata.IndividualAttack + pokemondata.IndividualDefense + pokemondata.IndividualStamina;
+
+                                pokemon.IV = System.Math.Round(((double)IvSum/45),2)*100;
+                                //pokemon.Move1 = pokemondata.Move1.ToString();
+                                //pokemon.Move1 = pokemondata.Move2.ToString();
+                                
+                            } catch {
+
+                            };
+                            pokemon.EncounterId = PokemonRequested.EncounterId;
+                            pokemon.SpawnpointId = PokemonRequested.SpawnPointId;
+                     } else {
+                         string b="";
+                     }
+
+                }
+
+
+        }
         private static void SessionOnAccessTokenUpdated(object sender, EventArgs eventArgs)
         {
             var session = (Session)sender;
@@ -181,6 +187,8 @@ namespace PSSniper
         {
             //string a;
             //Logger.Info("Map was updated.");
+            //Console.WriteLine("map updated");
+            //UpdateCounter++;
         }
 
         private static void SaveAccessToken(AccessToken accessToken)

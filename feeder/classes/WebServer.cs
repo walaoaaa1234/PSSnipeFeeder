@@ -69,7 +69,6 @@ namespace PSSniper
                     //Console.WriteLine("pokesniper2 done");   
                 }
                 if (Pokemon.PokemonName !=null) {
-                   Console.WriteLine("adding pokemon");   
                    Program.AddPokemon(Pokemon);
                 }
             }
