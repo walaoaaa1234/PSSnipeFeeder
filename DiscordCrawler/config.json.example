@@ -1,0 +1,21 @@
+{
+    "user_token": "USERTOKEN",
+    "PSSniperUrl": "http://127.0.0.1:5000",
+    "channels": [
+        {
+            "server_name": "Pokedex100",
+            "channel_name":"100playground",
+            "parseregex": "(?<name>[^\\s]+)\\s(?<IV>[^IV]+)IV\\s(?<latitude>[^,]+),(?<longtitude>[^\\s]+)",
+            "minimum_iv": 99.9
+        },
+        {
+            "server_name": "another_server",
+            "channel_name":"some_channel_Name",
+            "parseregex": "regex2",
+            "minimum_iv": 99.9
+        }
+    ]
+}
+
+
+            
