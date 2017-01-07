@@ -93,7 +93,7 @@ namespace PSSniperDiscordCrawler
                             } catch {
                             }
                         } else {
-                            Console.WriteLine(String.Format("Pokemon IV: {0} is less then defined minimum IV of {1}",m.Groups["IV"].Value,configchannel.minimumiv));  
+                            Console.WriteLine(String.Format("====================> Pokemon IV: {0} is less then defined minimum IV of {1}",m.Groups["IV"].Value,configchannel.minimumiv));  
                         }
 
                 } else {
