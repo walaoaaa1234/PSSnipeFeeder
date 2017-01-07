@@ -44,6 +44,6 @@ To test, check Table tab below Input field.
 
 
 # Usage
-dotnet run
+>dotnet run
 
 Enjoy!
