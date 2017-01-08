@@ -19,7 +19,7 @@ namespace PSSniper
            string a = JsonConvert.SerializeObject(Pokemons, Formatting.Indented);
            //Console.WriteLine("Serving pokemons: ");
            //Console.WriteLine(a);
-           Console.WriteLine("adding pokemon");   
+           Console.WriteLine("==> adding pokemon");   
            try {
             List<PokemonInfo> newlist = new List<PokemonInfo>();
 
@@ -35,10 +35,10 @@ namespace PSSniper
            }
            if (Pokemons.Contains(Pokemon) == false) {
                if ((Pokemon.EncounterId ==0 ) | (Pokemon.SpawnpointId == null)) {
-                   Console.WriteLine("Checking/getting data (about) pokemon. It will take up to 1 minute, please wait");
+                   Console.WriteLine("====> Checking/getting data (about) pokemon. It will take up to 1 minute, please wait");
                    Pokemon = libcaller.VerifyPokemon(Pokemon,config) ;
                    if (Pokemon.EncounterId ==0 ) {
-                       Console.WriteLine(String.Format("Pokemon {0} not discovered at location {1} , {2} ",Pokemon.PokemonName,Pokemon.Latitude,Pokemon.Longtitude));
+                       Console.WriteLine(String.Format("======> Pokemon {0} not discovered at location {1} , {2} ",Pokemon.PokemonName,Pokemon.Latitude,Pokemon.Longtitude));
                    }
                }
                if ((Pokemon.EncounterId >0 ) & (Pokemon.SpawnpointId != null)) {
@@ -46,11 +46,11 @@ namespace PSSniper
                     Pokemon.expiration = Convert.ToInt64((Pokemon.expirationdt -DateTime.Parse("1/1/1970")).TotalMilliseconds);
                     Pokemons.Add(Pokemon);
                     //Console.WriteLine(string.Format("Added to list: {0}:{1},{2}",Pokemon.PokemonName,Pokemon.Latitude,Pokemon.Longtitude ));
-                    Console.WriteLine("Added: ");
+                    Console.WriteLine("======> Added: ");
                     a = JsonConvert.SerializeObject(Pokemon, Formatting.Indented);
                     Console.WriteLine(a);
                } else {
-                   Console.WriteLine("Pokemon not added . Encounter and/or SpawnpointId are empty");
+                   Console.WriteLine("======> Pokemon not added . Encounter and/or SpawnpointId are empty");
                }
                       
            if (Pokemons.Count ==0 ) {

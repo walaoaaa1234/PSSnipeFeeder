@@ -43,7 +43,7 @@ namespace PSSniper
         private static async Task Run()
         {
             if ( cooldown >  POGOLib.Official.Util.TimeUtil.GetCurrentTimestampInMilliseconds()) {  
-                 Console.WriteLine("cool down");
+                 Console.WriteLine("======> cool down");
                  return; 
             }
            
@@ -121,7 +121,7 @@ namespace PSSniper
             } 
             else
             {
-                Console.WriteLine("No Fort data found. Captcha soft/ip/hard ban? Check account, take a rest , etc. ");
+                Console.WriteLine("======> No Fort data found. Captcha soft/ip/hard ban? Check account, take a rest , etc. ");
             }
             //Console.WriteLine("Teleporting back to startup");
             session.Player.SetCoordinates (start_latitude,start_longtitude);
