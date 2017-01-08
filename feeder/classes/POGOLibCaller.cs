@@ -42,6 +42,10 @@ namespace PSSniper
 
         private static async Task Run()
         {
+            if ( cooldown >  POGOLib.Official.Util.TimeUtil.GetCurrentTimestampInMilliseconds()) {  
+                 Console.WriteLine("cool down");
+                 return; 
+            }
            
             var pokeHashAuthKey = config.hashkey;
 
@@ -97,21 +101,8 @@ namespace PSSniper
 
             // Retrieve the closest fort to your current player coordinates.
             var closestFort = session.Map.GetFortsSortedByDistance().FirstOrDefault();
-            /*if (closestFort==null) {
-                int i=1;
-                do {
-                    Console.WriteLine("repeat fort: "+i.ToString());
-                    await session.RpcClient.RefreshMapObjectsAsync();
-                    closestFort = session.Map.GetFortsSortedByDistance().FirstOrDefault();
-                    //System.Threading.Thread.Sleep(1000);
-                    i++;
-                } while (i<60 & (closestFort == null));
-            }*/
             if (closestFort != null)
             {
-               //closestFort.CooldownCompleteTimestampMs 
-               //POGOLib.Official.Util.TimeUtil.GetCurrentTimestampInMilliseconds()
-               if ( cooldown <=  POGOLib.Official.Util.TimeUtil.GetCurrentTimestampInMilliseconds()) {
                     cooldown = closestFort.CooldownCompleteTimestampMs; 
                     IEnumerable<POGOProtos.Map.Pokemon.MapPokemon> catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
                     SearchForPokemon(catchable).GetAwaiter().GetResult();
@@ -127,9 +118,6 @@ namespace PSSniper
                         } while    (i<60 & (pokemon.EncounterId==0) );
                         //} while    (pokemon.EncounterId==0 );
                     }
-                }  else {
-                    Console.WriteLine("cool down");
-                    }      
             } 
             else
             {
