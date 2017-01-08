@@ -47,6 +47,10 @@ To test, check Table tab below Input field.
 # Usage
 ````
 cd DiscordCrawler
+dotner restore 
 dotnet run
 ````
+
+>dotnet restore is needed only before 1st run
+
 Enjoy!
