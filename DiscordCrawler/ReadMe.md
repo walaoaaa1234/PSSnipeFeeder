@@ -17,7 +17,7 @@ This is your user token
 1. replace USERTOKEN with your user token found above. Make sure that you have only quote character and beginnng and at the end. 
 2. adjust servers and rooms as you need. One server and room is checked by default, only for responses in specific string
 3. If you adding a new server/room or you would like to change parser, make sure you know how to handle regular expressions... :) 
-4. Adjust filters. The first filter on the list (per channe) - wins
+4. Adjust filters. The first filter from the list (per channe) , that is met  - wins
 
 # (Optional) How to prepare parsing regular expressions
 
