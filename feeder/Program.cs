@@ -17,8 +17,8 @@ namespace PSSniper
 
         public static void AddPokemon(PokemonInfo Pokemon) {
            string a = JsonConvert.SerializeObject(Pokemons, Formatting.Indented);
-           Console.WriteLine("Serving pokemons: ");
-           Console.WriteLine(a);
+           //Console.WriteLine("Serving pokemons: ");
+           //Console.WriteLine(a);
            Console.WriteLine("adding pokemon");   
            try {
             List<PokemonInfo> newlist = new List<PokemonInfo>();

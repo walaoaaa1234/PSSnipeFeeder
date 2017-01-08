@@ -51,6 +51,8 @@ For example for PokemonGo-Bot add below to Sniper task
 cd feeder
 dotnet run
 ```
+To find out which pokemons are available in tool out, just open in browser the tool url , for example , in default configuration:
+> http://127.0.0.1:5000/
 
 For instruction how to use Discord to feed the bot, check [DiscordCrawler](https://github.com/pogarek/PSSnipeFeeder/tree/master/DiscordCrawler) directory. 
 
