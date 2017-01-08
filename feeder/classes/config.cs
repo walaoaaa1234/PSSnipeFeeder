@@ -11,6 +11,7 @@ namespace PSSniper
         public string webserveraddress;
         public string webserverport;
         public int minutestoexpire;
+        public string startlocation; 
         
     }
 }

@@ -10,6 +10,7 @@ namespace PSSniper
     /// </summary>
     public class Program
     {
+        private static POGOLibCaller libcaller = new POGOLibCaller();
         public static List<PokemonInfo> Pokemons = new List<PokemonInfo>() ;
 
         private static Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Directory.GetCurrentDirectory()+@"\config.json"));
@@ -35,7 +36,7 @@ namespace PSSniper
            if (Pokemons.Contains(Pokemon) == false) {
                if ((Pokemon.EncounterId ==0 ) | (Pokemon.SpawnpointId == null)) {
                    Console.WriteLine("Checking/getting data (about) pokemon. It will take up to 1 minute, please wait");
-                   Pokemon = POGOLibCaller.VerifyPokemon(Pokemon,config) ;
+                   Pokemon = libcaller.VerifyPokemon(Pokemon,config) ;
                    if (Pokemon.EncounterId ==0 ) {
                        Console.WriteLine(String.Format("Pokemon {0} not discovered at location {1} , {2} ",Pokemon.PokemonName,Pokemon.Latitude,Pokemon.Longtitude));
                    }

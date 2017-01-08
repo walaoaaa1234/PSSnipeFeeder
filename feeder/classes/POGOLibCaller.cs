@@ -17,6 +17,8 @@ using POGOLib.Official.LoginProviders;
 using POGOLib.Official.Util.Hash;
 using POGOLib.Official;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace PSSniper
 {
@@ -24,11 +26,13 @@ namespace PSSniper
     {
 
         //private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        public static Session session;
+        public static long cooldown ; 
         private static PokemonInfo pokemon;
         private static Config config; 
         //private static int UpdateCounter=0;
 
-        public static PokemonInfo VerifyPokemon(PokemonInfo Pokemonl, Config configl) 
+        public  PokemonInfo VerifyPokemon(PokemonInfo Pokemonl, Config configl) 
         {
             pokemon = Pokemonl;
             config = configl;
@@ -67,23 +71,31 @@ namespace PSSniper
             var locRandom = new Random();
             var latitude = pokemon.Latitude;
             var longitude = pokemon.Longtitude;
-            var session = await GetSession(loginProvider, latitude, longitude, true);
+            CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            culture.NumberFormat.NumberDecimalSeparator = ".";
+            double start_latitude = Convert.ToDouble(Regex.Split(config.startlocation,",")[0],culture);
+            double start_longtitude = Convert.ToDouble(Regex.Split(config.startlocation,",")[1],culture);
+            if (session == null) {
+                //Console.WriteLine("==>Creating session/logging in. ");
+                session = await GetSession(loginProvider, start_latitude, start_longtitude, true);
+                SaveAccessToken(session.AccessToken);
+                session.AccessTokenUpdated += SessionOnAccessTokenUpdated;
+                //session.Player.Inventory.Update += InventoryOnUpdate;
+                session.Map.Update += MapOnUpdate;
 
-            SaveAccessToken(session.AccessToken);
-
-            session.AccessTokenUpdated += SessionOnAccessTokenUpdated;
-            //session.Player.Inventory.Update += InventoryOnUpdate;
-            session.Map.Update += MapOnUpdate;
-
-            // Send initial requests and start HeartbeatDispatcher.
-            // This makes sure that the initial heartbeat request finishes and the "session.Map.Cells" contains stuff.
-            if(!await session.StartupAsync())
-            {
-                throw new Exception("Session couldn't start up.");
+                // Send initial requests and start HeartbeatDispatcher.
+                // This makes sure that the initial heartbeat request finishes and the "session.Map.Cells" contains stuff.
+                if(!await session.StartupAsync())
+                {
+                    throw new Exception("Session couldn't start up.");
+                }
             }
+            //Console.WriteLine("==>Teleporting to pokemon");
+            session.Player.SetCoordinates (latitude,longitude);
+            await session.RpcClient.RefreshMapObjectsAsync();
+            
 
             // Retrieve the closest fort to your current player coordinates.
-           
             var closestFort = session.Map.GetFortsSortedByDistance().FirstOrDefault();
             /*if (closestFort==null) {
                 int i=1;
@@ -97,35 +109,42 @@ namespace PSSniper
             }*/
             if (closestFort != null)
             {
-               IEnumerable<POGOProtos.Map.Pokemon.MapPokemon> catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
-               SearchForPokemon(session,catchable).GetAwaiter().GetResult();
-               if (pokemon.EncounterId == 0) {
-                   int i=1;
-                   do {
-                    //Console.WriteLine ("repeating: "+i.ToString());
-                    await session.RpcClient.RefreshMapObjectsAsync();
-                    //System.Threading.Thread.Sleep(1000);
-                    catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
-                    SearchForPokemon(session,catchable).GetAwaiter().GetResult();
-                    i++;
-                   } while    (i<60 & (pokemon.EncounterId==0) );
-                   //} while    (pokemon.EncounterId==0 );
-               }
-            
-            }
+               //closestFort.CooldownCompleteTimestampMs 
+               //POGOLib.Official.Util.TimeUtil.GetCurrentTimestampInMilliseconds()
+               if ( cooldown <=  POGOLib.Official.Util.TimeUtil.GetCurrentTimestampInMilliseconds()) {
+                    cooldown = closestFort.CooldownCompleteTimestampMs; 
+                    IEnumerable<POGOProtos.Map.Pokemon.MapPokemon> catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
+                    SearchForPokemon(catchable).GetAwaiter().GetResult();
+                    if (pokemon.EncounterId == 0) {
+                        int i=1;
+                        do {
+                            //Console.WriteLine ("repeating: "+i.ToString());
+                            await session.RpcClient.RefreshMapObjectsAsync();
+                            //System.Threading.Thread.Sleep(1000);
+                            catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
+                            SearchForPokemon(catchable).GetAwaiter().GetResult();
+                            i++;
+                        } while    (i<60 & (pokemon.EncounterId==0) );
+                        //} while    (pokemon.EncounterId==0 );
+                    }
+                }  else {
+                    Console.WriteLine("cool down");
+                    }      
+            } 
             else
             {
                 Console.WriteLine("No Fort data found. Captcha soft/ip/hard ban? Check account, take a rest , etc. ");
             }
-
+            //Console.WriteLine("Teleporting back to startup");
+            session.Player.SetCoordinates (start_latitude,start_longtitude);
             //System.Threading.Thread.Sleep(5000);
-            session.Shutdown();
-            session.Dispose();
+            //session.Shutdown();
+            //session.Dispose();
 
             // Handle quit commands.
             //HandleCommands();
         }
-        private static async Task SearchForPokemon (POGOLib.Official.Net.Session session,  IEnumerable<POGOProtos.Map.Pokemon.MapPokemon> catchable) {
+        private static async Task SearchForPokemon ( IEnumerable<POGOProtos.Map.Pokemon.MapPokemon> catchable) {
 
                 if (catchable.Count() > 0) {
                      //POGOProtos.Map.Pokemon.MapPokemon a = catchable.ElementAt(0);
