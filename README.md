@@ -1,15 +1,15 @@
-``
 # PSSnipeFeeder
 .Net core binary to feed PokemonGo-Bot (any bot which can read json files) with sniping information
 It can on any system (**Windows/Linux/MacOS**) ! 
-*However on Windows you can click on links on sniping website to feed your bot (read below)*
+You can add pokemon data manually or grab them, automatically from Discord channels. 
+*Additionaly, on  Windows you can click on links on sniping website to feed your bot (read below)*
 
 # Installation and update
 1. Install .net Core: https://www.microsoft.com/net/download/core#/current/sdk (SDK)
 2. Run commands: 
 ```
 git clone https://github.com/pogarek/PSSnipeFeeder
-cd PSSnipeFeeder
+Icd PSSnipeFeeder
 dotnet restore
 ```
 
@@ -18,6 +18,8 @@ dotnet restore
 git pull
 dotnet restore
 ```
+
+
 
 # Configuration
 1. Copy feeder\config.json.example to feeder\config.json and edit it. I recommend using a dedicated (with 1st pokemon caught etc) account for the tool. 
@@ -47,6 +49,8 @@ For example for PokemonGo-Bot add below to Sniper task
 cd feeder
 dotnet run
 ```
+
+
 
 Open a URL (in browser for example) with address:
 
