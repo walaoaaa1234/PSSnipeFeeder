@@ -50,7 +50,7 @@ cd feeder
 dotnet run
 ```
 
-
+For instruction how to use Discord to feed the bot, check [DiscordCrawler](https://github.com/pogarek/PSSnipeFeeder/tree/master/DiscordCrawler) directory. 
 
 Open a URL (in browser for example) with address:
 

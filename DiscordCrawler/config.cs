@@ -5,6 +5,15 @@ using System.Collections.Generic;
 
 namespace PSSniperDiscordCrawler
 {
+   
+   public class filter {
+       [JsonProperty("minimum_iv")]
+       public double minimumiv { get; set; }
+
+       [JsonProperty("name_filter")]
+       public string namefilter { get; set; }
+
+   }
    public class channel {
        [JsonProperty("server_name")]
        public string servername { get; set; }
@@ -12,10 +21,9 @@ namespace PSSniperDiscordCrawler
        public string channelname { get; set; }
        [JsonProperty("parseregex")]
        public string parseregex { get; set; }
-       
-       [JsonProperty("minimum_iv")]
-       public double minimumiv { get; set; }
 
+       [JsonProperty("filters")]
+       public List<filter> filters { get; set; }
        public ulong Channelid  { get; set; }
    }     
 

@@ -12,11 +12,12 @@ localStorage.token
 you should get a long string within quotes, like :""longtext"" . 
 This is your user token
 
-#config.json
+#config.json (copy an example file and edit the new file)
 
 1. replace USERTOKEN with your user token found above. Make sure that you have only quote character and beginnng and at the end. 
 2. adjust servers and rooms as you need. One server and room is checked by default, only for responses in specific string
 3. If you adding a new server/room or you would like to change parser, make sure you know how to handle regular expressions... :) 
+4. Adjust filters. The first filter on the list (per channe) - wins
 
 # (Optional) How to prepare parsing regular expressions
 
@@ -44,6 +45,8 @@ To test, check Table tab below Input field.
 
 
 # Usage
->dotnet run
-
+````
+cd DiscordCrawler
+dotnet run
+````
 Enjoy!

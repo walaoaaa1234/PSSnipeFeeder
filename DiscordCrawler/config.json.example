@@ -6,13 +6,31 @@
             "server_name": "Pokedex100",
             "channel_name":"100playground",
             "parseregex": "(?<name>[^\\s]+)\\s(?<IV>[^IV]+)IV\\s(?<latitude>[^,]+),(?<longtitude>[^\\s]+)",
-            "minimum_iv": 99.9
+            "filters": [
+                {
+                    "name_filter": "Lapras",
+                    "minimum_iv" : 0.01
+                },
+                                {
+                    "name_filter": "",
+                    "minimum_iv" : 99.9
+                }
+            ]
         },
         {
             "server_name": "another_server",
             "channel_name":"some_channel_Name",
             "parseregex": "regex2",
-            "minimum_iv": 99.9
+            "filters": [
+                {
+                    "name_filter": "Lapras",
+                    "minimum_iv" : 80.0
+                },
+                                {
+                    "name_filter": "",
+                    "minimum_iv" : 99.9
+                }
+            ]
         }
     ]
 }

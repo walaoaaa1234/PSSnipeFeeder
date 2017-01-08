@@ -77,25 +77,38 @@ namespace PSSniperDiscordCrawler
                 Console.WriteLine(String.Format("Server: {0} Channel:  {1} Message:  {2}",configchannel.servername, configchannel.channelname, message.Content));
                 Regex parserregex = new Regex(configchannel.parseregex);
                 Match m = parserregex.Match(message.Content);
-                //Match m = parserregex.Match("Exeggutor 84IV 40.013137,-75.106145 818CP L10 Zen Headbutt/Psychic");
+                //m = parserregex.Match("Exeggutor 100IV 40.013137,-75.106145 818CP L10 Zen Headbutt/Psychic");
                 if ( m.Success ) {
-                    Console.WriteLine(String.Format("======> Name: {0} IV {1} Coordinates: {2},{3}" , m.Groups["name"].Value,m.Groups["IV"].Value,m.Groups["latitude"].Value,m.Groups["longtitude"].Value));
                     CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
                     culture.NumberFormat.NumberDecimalSeparator = ".";
-                    if ( Convert.ToDouble(m.Groups["IV"].Value,culture) >= configchannel.minimumiv ) {
+                    string PokemonName = m.Groups["name"].Value;
+                    double PokemonIV = Convert.ToDouble(m.Groups["IV"].Value,culture);
+                    string latitude = m.Groups["latitude"].Value; 
+                    string longtitude = m.Groups["longtitude"].Value; 
+                    Console.WriteLine(String.Format("======> Name: {0} IV {1} Coordinates: {2},{3}" , m.Groups["name"].Value,m.Groups["IV"].Value,m.Groups["latitude"].Value,m.Groups["longtitude"].Value));
+                    bool requestsent = false;
+                    foreach (filter filter in configchannel.filters) {
+                        if ( PokemonName.Contains(filter.namefilter) & (PokemonIV >= filter.minimumiv) & (!requestsent) ) {
                             string uri = config.PSSniperUrl+String.Format("/addpokemon/pokesniper2://{0}/{1},{2}", m.Groups["name"].Value,m.Groups["latitude"].Value,m.Groups["longtitude"].Value);
                             Console.WriteLine(String.Format("====================> Calling : {0}",uri));
                         try {
                             string result="";
+                            requestsent = true; 
                             HttpClient h = new HttpClient();
                             h.Timeout = TimeSpan.FromSeconds(2);
-                                result = await h.GetStringAsync(new Uri(uri));
+                            result = await h.GetStringAsync(new Uri(uri));
+                            requestsent = true; 
                             } catch {
                             }
                         } else {
-                            Console.WriteLine(String.Format("====================> Pokemon IV: {0} is less then defined minimum IV of {1}",m.Groups["IV"].Value,configchannel.minimumiv));  
+                            //Console.WriteLine(String.Format("====================> Pokemon didn't met current  );  
                         }
+                    }
+                    if (!requestsent) {
+                            Console.WriteLine ("Pokemon hasn't met any of filter for this channel, so skipped");
+                    }
 
+                    
                 } else {
                     //Console.WriteLine(String.Format("Unable to parse the content with regexp {0}",configchannel.parseregex));
                 }
