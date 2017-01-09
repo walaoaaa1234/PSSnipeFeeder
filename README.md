@@ -11,7 +11,7 @@ You can add pokemon data manually or grab them, automatically from Discord chann
 2. Run commands: 
 ```
 git clone https://github.com/pogarek/PSSnipeFeeder
-Icd PSSnipeFeeder
+cd PSSnipeFeeder
 dotnet restore
 ```
 
