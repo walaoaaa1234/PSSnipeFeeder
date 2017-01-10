@@ -21,20 +21,7 @@ namespace PSSniper
            //Console.WriteLine(a);
            Console.WriteLine("==> adding pokemon");   
            try {
-                dynamic newlist ;
-                if (config.verifypokemon) {
-                    newlist = new List<PokemonInfoFull>();
-                } else {
-                    newlist = new List<PokemonInfo>();
-                }
 
-            foreach (dynamic poke in Pokemons) {
-                if (poke.expirationdt > DateTime.Now)  {
-                   newlist.Add(poke);
-                }
-            }
-            Pokemons = newlist;
-             
             //Console.WriteLine("cleaned up expired pokemons");
            } catch {
            }
@@ -55,7 +42,20 @@ namespace PSSniper
                
                }
 
-               
+                dynamic newlist ;
+                if (config.verifypokemon) {
+                    newlist = new List<PokemonInfoFull>();
+                } else {
+                    newlist = new List<PokemonInfo>();
+                }
+
+                foreach (dynamic poke in Pokemons) {
+                    if (poke.expirationdt > DateTime.Now)  {
+                    newlist.Add(poke);
+                    }
+                }
+                Pokemons = newlist;
+             
                //if ((Pokemon.EncounterId >0 ) & (Pokemon.SpawnpointId != null)) {
                     Pokemon.expirationdt = DateTime.Now.AddMinutes(config.minutestoexpire);
                     Pokemon.expiration = Convert.ToInt64((Pokemon.expirationdt -DateTime.Parse("1/1/1970")).TotalMilliseconds);
