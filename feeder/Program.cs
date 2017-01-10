@@ -11,19 +11,24 @@ namespace PSSniper
     public class Program
     {
         private static POGOLibCaller libcaller = new POGOLibCaller();
-        public static List<PokemonInfo> Pokemons = new List<PokemonInfo>() ;
+        public static dynamic Pokemons ;
 
-        private static Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Directory.GetCurrentDirectory()+@"\config.json"));
+        public static Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Directory.GetCurrentDirectory()+@"\config.json"));
 
-        public static void AddPokemon(PokemonInfo Pokemon) {
+        public static void AddPokemon(dynamic Pokemon) {
            string a = JsonConvert.SerializeObject(Pokemons, Formatting.Indented);
            //Console.WriteLine("Serving pokemons: ");
            //Console.WriteLine(a);
            Console.WriteLine("==> adding pokemon");   
            try {
-            List<PokemonInfo> newlist = new List<PokemonInfo>();
+                dynamic newlist ;
+                if (config.verifypokemon) {
+                    newlist = new List<PokemonInfoFull>();
+                } else {
+                    newlist = new List<PokemonInfo>();
+                }
 
-            foreach (PokemonInfo poke in Pokemons) {
+            foreach (dynamic poke in Pokemons) {
                 if (poke.expirationdt > DateTime.Now)  {
                    newlist.Add(poke);
                 }
@@ -34,14 +39,24 @@ namespace PSSniper
            } catch {
            }
            if (Pokemons.Contains(Pokemon) == false) {
-               if ((Pokemon.EncounterId ==0 ) | (Pokemon.SpawnpointId == null)) {
-                   Console.WriteLine("====> Checking/getting data (about) pokemon. It will take up to 1 minute, please wait");
-                   Pokemon = libcaller.VerifyPokemon(Pokemon,config) ;
-                   if (Pokemon.EncounterId ==0 ) {
-                       Console.WriteLine(String.Format("======> Pokemon {0} not discovered at location {1} , {2} ",Pokemon.PokemonName,Pokemon.Latitude,Pokemon.Longtitude));
-                   }
+               if (config.verifypokemon) {
+                if ( ((Pokemon.EncounterId ==0 ) | (Pokemon.SpawnpointId == null))  ) {
+                    Console.WriteLine("====> Checking/getting data (about) pokemon. It will take up to 1 minute, please wait");
+                    Pokemon = libcaller.VerifyPokemon(Pokemon,config) ;
+                    if (Pokemon.EncounterId ==0 ) {
+                        Console.WriteLine(String.Format("======> Pokemon {0} not discovered at location {1} , {2} ",Pokemon.PokemonName,Pokemon.Latitude,Pokemon.Longtitude));
+                    }
+                }
+                if ( ((Pokemon.EncounterId ==0 ) | (Pokemon.SpawnpointId == null))  ) {
+                     Console.WriteLine("======> Pokemon not added . Encounter and/or SpawnpointId are empty");
+                    return;
                }
-               if ((Pokemon.EncounterId >0 ) & (Pokemon.SpawnpointId != null)) {
+
+               
+               }
+
+               
+               //if ((Pokemon.EncounterId >0 ) & (Pokemon.SpawnpointId != null)) {
                     Pokemon.expirationdt = DateTime.Now.AddMinutes(config.minutestoexpire);
                     Pokemon.expiration = Convert.ToInt64((Pokemon.expirationdt -DateTime.Parse("1/1/1970")).TotalMilliseconds);
                     Pokemons.Add(Pokemon);
@@ -49,18 +64,28 @@ namespace PSSniper
                     Console.WriteLine("======> Added: ");
                     a = JsonConvert.SerializeObject(Pokemon, Formatting.Indented);
                     Console.WriteLine(a);
-               } else {
-                   Console.WriteLine("======> Pokemon not added . Encounter and/or SpawnpointId are empty");
-               }
+               //} else {
+                   //Console.WriteLine("======> Pokemon not added . Encounter and/or SpawnpointId are empty");
+              // }
                       
            if (Pokemons.Count ==0 ) {
-               PokemonInfo tmppoke = new PokemonInfo();
+                dynamic tmppoke ;
+
+               if (config.verifypokemon) {
+                    tmppoke = new PokemonInfoFull();
+               } else {
+                    tmppoke = new PokemonInfo();;
+               }
+               
+               //PokemonInfo tmppoke = new PokemonInfo();
                tmppoke.PokemonName = "Bellsprout";
                tmppoke.IV = 10;
                tmppoke.Latitude = 23.906291124969709;
                tmppoke.Longtitude = 120.59261531771575;
-               tmppoke.EncounterId = 13139724800732585298;
-               tmppoke.SpawnpointId = "3469343f3d9";
+               if (config.verifypokemon) {
+                   tmppoke.EncounterId = 13139724800732585298;
+                   tmppoke.SpawnpointId = "3469343f3d9";
+               }
                tmppoke.expirationdt = DateTime.Now.AddMinutes(config.minutestoexpire);
                tmppoke.expiration = Convert.ToInt64((Pokemon.expirationdt -DateTime.Parse("1/1/1970")).TotalMilliseconds);
                Pokemons.Add(tmppoke);
@@ -76,18 +101,27 @@ namespace PSSniper
         
         public static int Main(string[] args)
         {
-            PokemonInfo tmppoke = new PokemonInfo();
+
+            dynamic tmppoke; 
+            if (config.verifypokemon) {
+                Pokemons = new List<PokemonInfoFull>() ;
+                tmppoke = new PokemonInfoFull();
+            } else {
+                Pokemons = new List<PokemonInfo>() ;
+                tmppoke = new PokemonInfo();
+            }
+
             tmppoke.PokemonName = "Bellsprout";
-            tmppoke.IV = 10;
             tmppoke.Latitude = 23.906291124969709;
             tmppoke.Longtitude = 120.59261531771575;
-            tmppoke.EncounterId = 13139724800732585298;
-            tmppoke.SpawnpointId = "3469343f3d9";
+            if (config.verifypokemon) {
+                tmppoke.EncounterId = 13139724800732585298;
+                tmppoke.SpawnpointId = "3469343f3d9";
+                tmppoke.IV = 10;
+            }
             tmppoke.expirationdt = DateTime.Now.AddMinutes(config.minutestoexpire);
             tmppoke.expiration = Convert.ToInt64((tmppoke.expirationdt -DateTime.Parse("1/1/1970")).TotalMilliseconds);
             AddPokemon(tmppoke);
-            //Pokemons.Add(tmppoke);
-            
 
             WebServerWrapper.Port = config.webserverport; 
             WebServerWrapper.NameOrIp = config.webserveraddress;

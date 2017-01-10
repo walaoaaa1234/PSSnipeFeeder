@@ -9,6 +9,20 @@ namespace PSSniper
         public string PokemonName;
         public double Latitude;
         public double Longtitude;
+        public Int64 expiration; 
+
+        public DateTime expirationdt; 
+
+        public PokemonInfo () {
+
+        }
+
+   }
+       public class PokemonInfoFull 
+    {
+        public string PokemonName;
+        public double Latitude;
+        public double Longtitude;
         public double IV;
 
 /*        public string Move1="";
@@ -21,9 +35,10 @@ namespace PSSniper
 
         public DateTime expirationdt; 
 
-        public PokemonInfo () {
+        public PokemonInfoFull () {
 
         }
 
    }
+
 }

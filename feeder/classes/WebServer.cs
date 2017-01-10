@@ -44,19 +44,26 @@ namespace PSSniper
        
                 if (path.StartsWith("/addpokemon")) {
                     Console.WriteLine("request received : "+path);
-                    PokemonInfo Pokemon = new PokemonInfo();
+                    dynamic Pokemon;
+                    if (Program.config.verifypokemon) {
+                        Pokemon = new PokemonInfoFull();
+                    }else {
+                        Pokemon = new PokemonInfo();
+                    }
                     path = path.Replace(System.Environment.NewLine, "");
                     string[] strings = Regex.Split(path,"/");
                 if (strings[2]== "msniper:") {
                     //Console.WriteLine("processing msniper");   
-                    Pokemon.PokemonName = strings[4];
-                    Pokemon.EncounterId = Convert.ToUInt64(strings[5]);
-                    Pokemon.SpawnpointId = strings[6];
                     CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
                     culture.NumberFormat.NumberDecimalSeparator = ".";
+                    Pokemon.PokemonName = strings[4];
+                    if (Program.config.verifypokemon) {
+                        Pokemon.EncounterId = Convert.ToUInt64(strings[5]);
+                        Pokemon.SpawnpointId = strings[6];
+                        Pokemon.IV =  Convert.ToDouble(strings[8],culture);
+                    }
                     Pokemon.Latitude = Convert.ToDouble(Regex.Split(strings[7],",")[0],culture);
                     Pokemon.Longtitude = Convert.ToDouble(Regex.Split(strings[7],",")[1],culture);
-                    Pokemon.IV =  Convert.ToDouble(strings[8],culture);
                     //Console.WriteLine("msniper done");   
                 }
                 if (strings[2]=="pokesniper2:") {

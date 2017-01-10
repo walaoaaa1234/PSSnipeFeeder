@@ -7,5 +7,6 @@
     "webserveraddress": "127.0.0.1",
     "webserverport": "5000",
     "minutestoexpire": 3,
-    "startlocation": "37.788626, -122.413547"
+    "startlocation": "37.788626, -122.413547",
+    "verifypokemon": true
 }

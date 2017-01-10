@@ -28,11 +28,11 @@ namespace PSSniper
         //private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         public static Session session;
         public static long cooldown ; 
-        private static PokemonInfo pokemon;
+        private static PokemonInfoFull pokemon;
         private static Config config; 
         //private static int UpdateCounter=0;
 
-        public  PokemonInfo VerifyPokemon(PokemonInfo Pokemonl, Config configl) 
+        public  PokemonInfoFull VerifyPokemon(PokemonInfoFull Pokemonl, Config configl) 
         {
             pokemon = Pokemonl;
             config = configl;

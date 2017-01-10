@@ -11,7 +11,8 @@ namespace PSSniper
         public string webserveraddress;
         public string webserverport;
         public int minutestoexpire;
-        public string startlocation; 
+        public string startlocation;
+        public bool  verifypokemon=true;
         
     }
 }
