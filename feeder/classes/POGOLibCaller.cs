@@ -121,7 +121,17 @@ namespace PSSniper
             } 
             else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("======> No Fort data found. Captcha soft/ip/hard ban? Check account, take a rest , etc. ");
+                Console.ForegroundColor = ConsoleColor.White; 
+                session.Player.SetCoordinates (start_latitude,start_longtitude);
+                session.Shutdown();
+                session.Dispose();
+                session = null;
+
+                {
+                    
+                }
             }
             //Console.WriteLine("Teleporting back to startup");
             session.Player.SetCoordinates (start_latitude,start_longtitude);
@@ -159,14 +169,16 @@ namespace PSSniper
                                 int IvSum = pokemondata.IndividualAttack + pokemondata.IndividualDefense + pokemondata.IndividualStamina;
 
                                 pokemon.IV = System.Math.Round(((double)IvSum/45),2)*100;
-                                //pokemon.Move1 = pokemondata.Move1.ToString();
-                                //pokemon.Move1 = pokemondata.Move2.ToString();
+                                pokemon.CP = pokemondata.Cp;
+                                pokemon.Move1 = pokemondata.Move1.ToString();
+                                pokemon.Move2 = pokemondata.Move2.ToString();
                                 
                             } catch {
 
                             };
                             pokemon.EncounterId = PokemonRequested.EncounterId;
                             pokemon.SpawnpointId = PokemonRequested.SpawnPointId;
+                            
                      } else {
                          string b="";
                      }
