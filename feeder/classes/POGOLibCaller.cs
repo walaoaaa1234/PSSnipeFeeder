@@ -96,42 +96,42 @@ namespace PSSniper
             }
             //Console.WriteLine("==>Teleporting to pokemon");
             session.Player.SetCoordinates (latitude,longitude);
-            await session.RpcClient.RefreshMapObjectsAsync();
-            
-
-            // Retrieve the closest fort to your current player coordinates.
             var closestFort = session.Map.GetFortsSortedByDistance().FirstOrDefault();
-            if (closestFort != null)
-            {
-                    cooldown = closestFort.CooldownCompleteTimestampMs; 
-                    IEnumerable<POGOProtos.Map.Pokemon.MapPokemon> catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
-                    SearchForPokemon(catchable).GetAwaiter().GetResult();
-                    if (pokemon.EncounterId == 0) {
-                        int i=1;
-                        do {
-                            //Console.WriteLine ("repeating: "+i.ToString());
-                            await session.RpcClient.RefreshMapObjectsAsync();
-                            //System.Threading.Thread.Sleep(1000);
-                            catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
-                            SearchForPokemon(catchable).GetAwaiter().GetResult();
-                            i++;
-                        } while    (i<60 & (pokemon.EncounterId==0) );
-                        //} while    (pokemon.EncounterId==0 );
-                    }
-            } 
-            else
+            int i=1; 
+            do {
+                Console.Write(String.Format("\rPokemon {0} attemp {1} of {2}",pokemon.PokemonName, i.ToString(),config.tryforseconds.ToString()));
+                await session.RpcClient.RefreshMapObjectsAsync();
+                // Retrieve the closest fort to your current player coordinates.
+                closestFort = session.Map.GetFortsSortedByDistance().FirstOrDefault();
+                if (closestFort != null)
+                {
+                        cooldown = closestFort.CooldownCompleteTimestampMs; 
+                        IEnumerable<POGOProtos.Map.Pokemon.MapPokemon> catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
+                        SearchForPokemon(catchable).GetAwaiter().GetResult();
+                        /*if (pokemon.EncounterId == 0) {
+                            int i=1;
+                            do {
+                                //Console.WriteLine ("repeating: "+i.ToString());
+                                await session.RpcClient.RefreshMapObjectsAsync();
+                                //System.Threading.Thread.Sleep(1000);
+                                catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
+                                SearchForPokemon(catchable).GetAwaiter().GetResult();
+                                i++;
+                            } while    (i<60 & (pokemon.EncounterId==0) );
+                            //} while    (pokemon.EncounterId==0 );
+                        }*/
+                } 
+                i++;
+            } while  (i<=config.tryforseconds & (pokemon.EncounterId==0) ); 
+            if (closestFort == null)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("======> No Fort data found. Captcha soft/ip/hard ban? Check account, take a rest , etc. ");
                 Console.ForegroundColor = ConsoleColor.White; 
                 session.Player.SetCoordinates (start_latitude,start_longtitude);
-                session.Shutdown();
-                session.Dispose();
-                session = null;
-
-                {
-                    
-                }
+                //session.Shutdown();
+                //session.Dispose();
+                //session = null;
             }
             //Console.WriteLine("Teleporting back to startup");
             session.Player.SetCoordinates (start_latitude,start_longtitude);

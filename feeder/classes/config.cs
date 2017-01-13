@@ -13,6 +13,7 @@ namespace PSSniper
         public int minutestoexpire;
         public string startlocation;
         public bool  verifypokemon=true;
+        public int tryforseconds = 180; 
         
     }
 }

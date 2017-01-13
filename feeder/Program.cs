@@ -10,8 +10,9 @@ namespace PSSniper
     /// </summary>
     public class Program
     {
-        private static POGOLibCaller libcaller = new POGOLibCaller();
+        //private static POGOLibCaller libcaller = new POGOLibCaller();
         public static dynamic Pokemons ;
+        private static bool Busy = false; 
 
         public static Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Directory.GetCurrentDirectory()+@"\config.json"));
 
@@ -20,20 +21,29 @@ namespace PSSniper
            //Console.WriteLine("Serving pokemons: ");
            //Console.WriteLine(a);
            Console.WriteLine("==> adding pokemon");   
-           try {
 
-            //Console.WriteLine("cleaned up expired pokemons");
-           } catch {
-           }
            if (Pokemons.Contains(Pokemon) == false) {
                if (config.verifypokemon) {
                 if ( ((Pokemon.EncounterId ==0 ) | (Pokemon.SpawnpointId == null))  ) {
-                    Console.WriteLine("====> Checking/getting data (about) pokemon. It will take up to 1 minute, please wait");
-                    Pokemon = libcaller.VerifyPokemon(Pokemon,config) ;
-                    if (Pokemon.EncounterId ==0 ) {
-                        Console.WriteLine(String.Format("======> Pokemon {0} not discovered at location {1} , {2} ",Pokemon.PokemonName,Pokemon.Latitude,Pokemon.Longtitude));
+                    if (Busy) {
+                        Console.WriteLine("====> I'm busy with checking another pokeon now. Skipping"); 
+                        return; 
+                    } 
+                    else {
+                        Busy = true; 
+                        Console.WriteLine(String.Format("====> Checking/getting data (about) pokemon. It will take up to {0} seconds, please wait",config.tryforseconds.ToString()));
+                        try {
+                            POGOLibCaller libcaller = new POGOLibCaller();
+                            Pokemon = libcaller.VerifyPokemon(Pokemon,config) ;
+                        } catch {
+                            Console.WriteLine(String.Format("=======> Exception happened. Search is stopped for this pokemon"));    
+                        }
+                        if (Pokemon.EncounterId ==0 ) {
+                            Console.WriteLine(String.Format("======> Pokemon {0} not discovered at location {1} , {2} ",Pokemon.PokemonName,Pokemon.Latitude,Pokemon.Longtitude));
+                        }
                     }
                 }
+                Busy = false; 
                 if ( ((Pokemon.EncounterId ==0 ) | (Pokemon.SpawnpointId == null))  ) {
                      Console.WriteLine("======> Pokemon not added . Encounter and/or SpawnpointId are empty");
                     return;
