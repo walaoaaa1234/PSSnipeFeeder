@@ -105,6 +105,7 @@ namespace PSSniper
                 closestFort = session.Map.GetFortsSortedByDistance().FirstOrDefault();
                 if (closestFort != null)
                 {
+                        Console.WriteLine("fort not empty");
                         cooldown = closestFort.CooldownCompleteTimestampMs; 
                         IEnumerable<POGOProtos.Map.Pokemon.MapPokemon> catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
                         SearchForPokemon(catchable).GetAwaiter().GetResult();
@@ -126,6 +127,7 @@ namespace PSSniper
             if (closestFort == null)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine();
                 Console.WriteLine("======> No Fort data found. Captcha soft/ip/hard ban? Check account, take a rest , etc. ");
                 Console.ForegroundColor = ConsoleColor.White; 
                 session.Player.SetCoordinates (start_latitude,start_longtitude);
