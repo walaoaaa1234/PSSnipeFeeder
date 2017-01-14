@@ -86,7 +86,7 @@ namespace PSSniper
                 session.AccessTokenUpdated += SessionOnAccessTokenUpdated;
                 //session.Player.Inventory.Update += InventoryOnUpdate;
                 session.Map.Update += MapOnUpdate;
-
+                Console.WriteLine("connecting to PokemonGo servers through hashing servers");
                 // Send initial requests and start HeartbeatDispatcher.
                 // This makes sure that the initial heartbeat request finishes and the "session.Map.Cells" contains stuff.
                 if(!await session.StartupAsync())
@@ -96,48 +96,50 @@ namespace PSSniper
             }
             //Console.WriteLine("==>Teleporting to pokemon");
             session.Player.SetCoordinates (latitude,longitude);
-            var closestFort = session.Map.GetFortsSortedByDistance().FirstOrDefault();
+            System.Threading.Thread.Sleep(3000);
+            //var closestFort = session.Map.GetFortsSortedByDistance().FirstOrDefault();
             int i=1; 
-            do {
-                Console.Write(String.Format("\rPokemon {0} attemp {1} of {2}",pokemon.PokemonName, i.ToString(),config.tryforseconds.ToString()));
+            //do {
+                //Console.Write(String.Format("\rPokemon {0} attemp {1} of {2}",pokemon.PokemonName, i.ToString(),config.tryforseconds.ToString()));
                 await session.RpcClient.RefreshMapObjectsAsync();
                 // Retrieve the closest fort to your current player coordinates.
-                closestFort = session.Map.GetFortsSortedByDistance().FirstOrDefault();
+                var closestFort = session.Map.GetFortsSortedByDistance().FirstOrDefault();
                 if (closestFort != null)
                 {
-                        Console.WriteLine("fort not empty");
+                        //Console.Write(String.Format("\rPokemon {0} attemp {1} of {2}",pokemon.PokemonName, i.ToString(),config.tryforseconds.ToString()));
                         cooldown = closestFort.CooldownCompleteTimestampMs; 
                         IEnumerable<POGOProtos.Map.Pokemon.MapPokemon> catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
                         SearchForPokemon(catchable).GetAwaiter().GetResult();
-                        /*if (pokemon.EncounterId == 0) {
-                            int i=1;
+                        if (pokemon.EncounterId == 0) {
+                            //int i=1;
                             do {
-                                //Console.WriteLine ("repeating: "+i.ToString());
+                                Console.Write(String.Format("\rPokemon {0} attemp {1} of {2}",pokemon.PokemonName, i.ToString(),config.tryforseconds.ToString()));
                                 await session.RpcClient.RefreshMapObjectsAsync();
                                 //System.Threading.Thread.Sleep(1000);
                                 catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
                                 SearchForPokemon(catchable).GetAwaiter().GetResult();
                                 i++;
-                            } while    (i<60 & (pokemon.EncounterId==0) );
+                            } while    (i<=config.tryforseconds & (pokemon.EncounterId==0) ); 
                             //} while    (pokemon.EncounterId==0 );
-                        }*/
+                        
                 } 
-                i++;
-            } while  (i<=config.tryforseconds & (pokemon.EncounterId==0) ); 
-            if (closestFort == null)
+                //i++;
+            //} while  (i<=config.tryforseconds & (pokemon.EncounterId==0) ); 
+            } else 
+           // if (closestFort == null)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine();
                 Console.WriteLine("======> No Fort data found. Captcha soft/ip/hard ban? Check account, take a rest , etc. ");
                 Console.ForegroundColor = ConsoleColor.White; 
-                session.Player.SetCoordinates (start_latitude,start_longtitude);
+                //session.Player.SetCoordinates (start_latitude,start_longtitude);
                 //session.Shutdown();
                 //session.Dispose();
                 //session = null;
             }
             //Console.WriteLine("Teleporting back to startup");
             session.Player.SetCoordinates (start_latitude,start_longtitude);
-            //System.Threading.Thread.Sleep(5000);
+            System.Threading.Thread.Sleep(500);
             //session.Shutdown();
             //session.Dispose();
 

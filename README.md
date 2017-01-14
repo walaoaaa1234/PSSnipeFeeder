@@ -54,11 +54,15 @@ dotnet run
 To find out which pokemons are available in tool out, just open in browser the tool url , for example , in default configuration:
 > http://127.0.0.1:5000/
 
-For instruction how to use Discord to feed the bot, check [DiscordCrawler](https://github.com/pogarek/PSSnipeFeeder/tree/master/DiscordCrawler) directory. 
+
+### For instruction how to use Discord to feed the bot, check [DiscordCrawler](https://github.com/pogarek/PSSnipeFeeder/tree/master/DiscordCrawler) directory. 
+### For instruction how to use Msniper.com website to feed the bot, check [MSniperReader](https://github.com/pogarek/PSSnipeFeeder/tree/master/MSniperReader) directory. 
+
+## Adding pokemon data manually
 
 Open a URL (in browser for example) with address:
 
-## using msniper format
+### using msniper format
 
 ```
 http://webserveraddress:webserverport/addpokemon/msniper://PokemonName/encounterid/spawnpointid/latitude,longitude/iv  
@@ -69,7 +73,7 @@ for example:
 http://127.0.0.1:5000/addpokemon/msniper://Beedrill/13771894552293369407/3403ff2f5e7/22.330832561292816,114.10366351376578/59.64  
 ```
 
-##using pokesniper2 format: 
+### using pokesniper2 format: 
 
 ```
 http://webserveraddress:webserverport/addpokemon/pokesniper2://PokemonName/latitude,longitude
@@ -82,7 +86,7 @@ http://127.0.0.1:5000/addpokemon/pokesniper2://Beedrill/22.330832561292816,114.1
 
 For Pokesnipers2 this software will connect to Pokemons server (sorry, hashkey required)  to gather EncounterId and SpawnLocationsID and to check, if pokemon is there. 
 
-##Windows Only (unless you know how to register protocol handlers msniper:// or pokesniper2:// or another operating system - then let me know by creating an Issue on GitHub)
+### Windows Only (unless you know how to register protocol handlers msniper:// or pokesniper2:// or another operating system - then let me know by creating an Issue on GitHub)
 
 You can pass information directly to bot from sniping websites, like http://msniper.com or http://pokezzz.com. 
 Just run Windows\runme.bat to register the functionality, then you can click on sniping websites on Msniper or PokeSniper2 buttons. 

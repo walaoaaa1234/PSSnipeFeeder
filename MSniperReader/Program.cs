@@ -82,9 +82,12 @@ namespace MsniperReader
                     foreach (var Pokemon in tmp)
                     {
                         string PokemonName = Pokemon.PokemonName;
-                        double PokemonIV = Convert.ToDouble(Pokemon.Iv, culture);
+                        double PokemonIV = Pokemon.Iv;
+                        double latitude = Pokemon.Latitude;
+                        double longtitude = Pokemon.Longitude;
+                        /*double PokemonIV = Convert.ToDouble(Pokemon.Iv, culture);
                         double latitude = Convert.ToDouble(Pokemon.Latitude, culture);
-                        double longtitude = Convert.ToDouble(Pokemon.Longitude, culture);
+                        double longtitude = Convert.ToDouble(Pokemon.Longitude, culture);*/
                         ulong EncounterId = Pokemon.EncounterId;
                         string SpawnpointId = Pokemon.SpawnPointId;
 
