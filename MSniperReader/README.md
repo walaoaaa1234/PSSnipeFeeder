@@ -1,8 +1,6 @@
 # Configuration
 
-## UserToken
-
-#config.json (copy an example file and edit the new file)
+##config.json (copy an example file and edit the new file)
 
 1. Adjust filters. The first filter from the list (per channe) , that is met  - wins
 
