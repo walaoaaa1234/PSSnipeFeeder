@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks; 
 
 namespace PSSniper
 {
@@ -16,7 +17,7 @@ namespace PSSniper
 
 
         #region snippet_Main
-        public static int RunServer(string[] args)
+        public async Task RunServer(string[] args)
         {
             //Console.WriteLine("Running demo with Kestrel.");
 
@@ -40,8 +41,9 @@ namespace PSSniper
             var host = builder.Build();
             Console.WriteLine("Listening at: "+WebServerStartup.Address);
             host.Start();
-            do {}
-            while (true);
+            //do {}
+            //while (true);
+            await Task.Delay(-1);
             //return 0;
         }
         #endregion

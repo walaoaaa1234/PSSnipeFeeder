@@ -109,7 +109,8 @@ namespace PSSniper
         }
         #region snippet_Main
         
-        public static int Main(string[] args)
+        static void Main(string[] args) => new Program().Run(args).GetAwaiter().GetResult();
+        public async Task Run(string[] args)
         {
 
             dynamic tmppoke; 
@@ -135,9 +136,10 @@ namespace PSSniper
 
             WebServerWrapper.Port = config.webserverport; 
             WebServerWrapper.NameOrIp = config.webserveraddress;
-            WebServerWrapper.RunServer(args);
-            
-            return 0;
+            new WebServerWrapper().RunServer(args).GetAwaiter().GetResult();
+            await Task.Delay(-1);
+
+            //return 0;
         }
         #endregion
     }

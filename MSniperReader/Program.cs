@@ -20,13 +20,18 @@ namespace MsniperReader
         public static bool isConnected = false;
         private static object locker = new object();
         private static Config config = new Config();
-        public static void Main(string[] args)
+        
+         static void Main(string[] args) => new Program().Run().GetAwaiter().GetResult();
+
+        
+        public async Task Run()
         {
             config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Directory.GetCurrentDirectory() + @"\config.json"));
             ConnectMe();
-            {
+            /*{
                 Thread.Sleep(99999);
-             } while (true) ;
+             } while (true) ;*/
+            await Task.Delay(-1);
         }
 
         private static void ConnectMe()
@@ -81,6 +86,7 @@ namespace MsniperReader
 
                     foreach (var Pokemon in tmp)
                     {
+                        //Console.WriteLine(tmp);
                         string PokemonName = Pokemon.PokemonName;
                         double PokemonIV = Pokemon.Iv;
                         double latitude = Pokemon.Latitude;
