@@ -113,9 +113,9 @@ namespace PSSniper
                         if (pokemon.EncounterId == 0) {
                             //int i=1;
                             do {
+                                //System.Threading.Thread.Sleep(5000);
                                 Console.Write(String.Format("\rPokemon {0} attemp {1} of {2}",pokemon.PokemonName, i.ToString(),config.tryforseconds.ToString()));
                                 await session.RpcClient.RefreshMapObjectsAsync();
-                                //System.Threading.Thread.Sleep(1000);
                                 catchable = session.Map.Cells.SelectMany(c => c.CatchablePokemons);
                                 SearchForPokemon(catchable).GetAwaiter().GetResult();
                                 i++;

@@ -44,6 +44,21 @@ For example for PokemonGo-Bot add below to Sniper task
 				}
 ```
 
+####Note: above example should be used, when you have <"verifypokemon": true>  set in your config file. In case that you have this option set to false, make sure that your Snipe task is configured like below:
+```
+ 				{
+				  "enabled": true,
+					"url": "http://127.0.0.1:5000/",
+					"timeout": 3,
+					"mappings": {
+					"name": { "param": "PokemonName" },
+					"latitude": { "param": "Latitude" },
+					"longitude": { "param": "Longtitude" },
+					"expiration": { "param": "expiration", "format": "milliseconds" }
+					}
+				}
+```
+Also in such case, when you don't need to verify the Pokemon, then hashing key is not needed. 
 
 #Usage
 
