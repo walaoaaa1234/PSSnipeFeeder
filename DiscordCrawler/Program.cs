@@ -74,9 +74,19 @@ namespace PSSniperDiscordCrawler
             PSSniperDiscordCrawler.channel configchannel = config.channels.Where(c=>c.Channelid == message.Channel.Id).FirstOrDefault();
             if ( configchannel  != null) {
                 //Console.WriteLine(String.Format("{0}",configchannel.parseregex));
-                Console.WriteLine(String.Format("Server: {0} Channel:  {1} Message:  {2}",configchannel.servername, configchannel.channelname, message.Content));
+                string content = "" ;
+                if (message.Embeds.Count >0) {
+                   foreach (Discord.Embed entry in message.Embeds) {
+                       content= content + entry.ToString();  
+                   }
+                   foreach (Discord.EmbedField entry in message.Embeds.ElementAt(0).Fields) {
+                       content= content + entry.Value; 
+                   }
+                }
+                content = content + message.Content; 
+                Console.WriteLine(String.Format("Server: {0} Channel:  {1} Message:  {2}",configchannel.servername, configchannel.channelname, content));
                 Regex parserregex = new Regex(configchannel.parseregex);
-                Match m = parserregex.Match(message.Content);
+                Match m = parserregex.Match(content);
                 //m = parserregex.Match("Exeggutor 100IV 40.013137,-75.106145 818CP L10 Zen Headbutt/Psychic");
                 if ( m.Success ) {
                     CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
