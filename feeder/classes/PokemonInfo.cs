@@ -10,6 +10,7 @@ namespace PSSniper
         public double Latitude;
         public double Longtitude;
         public Int64 expiration; 
+        public double IV;
 
         public DateTime expirationdt; 
 

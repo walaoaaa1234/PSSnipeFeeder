@@ -99,7 +99,7 @@ namespace PSSniperDiscordCrawler
                     bool requestsent = false;
                     foreach (filter filter in configchannel.filters) {
                         if ( PokemonName.Contains(filter.namefilter) & (PokemonIV >= filter.minimumiv) & (!requestsent) ) {
-                            string uri = config.PSSniperUrl+String.Format("/addpokemon/pokesniper2://{0}/{1},{2}", m.Groups["name"].Value,m.Groups["latitude"].Value,m.Groups["longtitude"].Value);
+                            string uri = config.PSSniperUrl+String.Format("/addpokemon/pokesniper2://{0}/{1},{2}/{3}", m.Groups["name"].Value,m.Groups["latitude"].Value,m.Groups["longtitude"].Value,m.Groups["IV"].Value);
                             Console.WriteLine(String.Format("====================> Calling : {0}",uri));
                         try {
                             string result="";

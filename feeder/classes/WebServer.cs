@@ -73,6 +73,9 @@ namespace PSSniper
                     culture.NumberFormat.NumberDecimalSeparator = ".";
                     Pokemon.Latitude = Convert.ToDouble(Regex.Split(strings[5],",")[0],culture);
                     Pokemon.Longtitude = Convert.ToDouble(Regex.Split(strings[5],",")[1],culture);
+                    if (strings.Count()==7) {
+                        Pokemon.IV = Convert.ToDouble(strings[6],culture); 
+                    }
                     //Console.WriteLine("pokesniper2 done");   
                 }
                 if (Pokemon.PokemonName !=null) {
