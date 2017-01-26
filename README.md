@@ -71,7 +71,8 @@ To find out which pokemons are available in tool out, just open in browser the t
 
 
 ### For instruction how to use Discord to feed the bot, check [DiscordCrawler](https://github.com/pogarek/PSSnipeFeeder/tree/master/DiscordCrawler) directory. 
-### For instruction how to use Msniper.com website to feed the bot, check [MSniperReader](https://github.com/pogarek/PSSnipeFeeder/tree/master/MSniperReader) directory. 
+### ~~For instruction how to use Msniper.com website to feed the bot, check [MSniperReader](https://github.com/pogarek/PSSnipeFeeder/tree/master/MSniperReader) directory.~~ 
+(doesn't work right now - msniper.com is  behing CloudFlare)
 
 ## Adding pokemon data manually
 
