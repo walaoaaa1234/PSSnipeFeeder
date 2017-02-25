@@ -7,7 +7,7 @@
 3. Find somethig called console in the Developer Tools
 4. type : 
 ```
-localStorage.token
+document.body.appendChild(document.createElement`iframe`).contentWindow.localStorage.token
 ```
 you should get a long string within quotes, like :""longtext"" . 
 This is your user token
