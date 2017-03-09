@@ -20,6 +20,7 @@ namespace PSSniperDiscordCrawler
             private DiscordSocketClient client;
             public ulong Guildid  = 0;
             public ulong ChannelID =0;
+            private bool Connected = false;
             
         
         static void Main(string[] args) => new Program().Run().GetAwaiter().GetResult();
@@ -38,11 +39,20 @@ namespace PSSniperDiscordCrawler
                   //  await message.Channel.SendMessageAsync("pong");
             };
 
+            client.Connected += GotConnected;
+            client.Disconnected += GotDisconnected;
             Console.WriteLine("Connecting to Discord.");
             // Configure the client to use a Bot token, and use our token
             await client.LoginAsync(TokenType.User, token);
             // Connect the client to Discord's gateway
-            await client.ConnectAsync();
+            
+            
+            //await client.ConnectAsync();
+            await client.StartAsync();
+            do {
+                           
+            }while (  Connected  == false);
+            
             client.MessageReceived += HandleCommand;
             Console.WriteLine("Validating servers and channels");
             foreach (channel record  in config.channels) {
@@ -66,6 +76,19 @@ namespace PSSniperDiscordCrawler
 
 
     }
+
+public async Task GotConnected()  {
+    Connected = true; 
+}
+
+public async Task GotDisconnected(Exception e)  {
+    Connected = false; 
+            await client.StartAsync();
+            do {
+                           
+            }while (  Connected  == false);
+   
+}
 
         public async Task HandleCommand(SocketMessage messageParam)
 	{
