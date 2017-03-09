@@ -14,7 +14,7 @@ namespace PSSniper
         public static dynamic Pokemons ;
         private static bool Busy = false; 
 
-        public static Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Directory.GetCurrentDirectory()+@"\config.json"));
+        public static Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Directory.GetCurrentDirectory()+Path.DirectorySeparatorChar.ToString()+@"config.json"));
 
         public static void AddPokemon(dynamic Pokemon) {
            string a = JsonConvert.SerializeObject(Pokemons, Formatting.Indented);

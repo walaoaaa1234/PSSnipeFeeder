@@ -16,7 +16,7 @@ namespace PSSniperDiscordCrawler
     {
         
             // Create a DiscordClient with WebSocket support
-            private Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Directory.GetCurrentDirectory()+@"\config.json"));
+            private Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Directory.GetCurrentDirectory()+Path.DirectorySeparatorChar.ToString()+@"config.json"));
             private DiscordSocketClient client;
             public ulong Guildid  = 0;
             public ulong ChannelID =0;
