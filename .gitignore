@@ -22,3 +22,4 @@ wrapper/.vscode/
 wrapper/bin/
 wrapper/obj/
 wrapper/project.lock.json
+.vscode
