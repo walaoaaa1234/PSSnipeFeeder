@@ -32,12 +32,7 @@ namespace PSSniperDiscordCrawler
             client = new DiscordSocketClient();
             string token = config.user_token;
             // Hook into the MessageReceived event on DiscordSocketClient
-            client.MessageReceived += async (message) =>
-            {   // Check to see if the Message Content is "!ping"
-                //if (message.Content == "!ping")
-                    // Send 'pong' back to the channel the message was sent in
-                  //  await message.Channel.SendMessageAsync("pong");
-            };
+            
 
             client.Connected += GotConnected;
             client.Disconnected += GotDisconnected;
