@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using System.Net.Http;
 using System.Globalization;
+using System.Threading;
 
 namespace PSSniperDiscordCrawler
 {
@@ -32,23 +33,23 @@ namespace PSSniperDiscordCrawler
             client = new DiscordSocketClient();
             string token = config.user_token;
             // Hook into the MessageReceived event on DiscordSocketClient
-            
-
-            client.Connected += GotConnected;
-            client.Disconnected += GotDisconnected;
+          
             Console.WriteLine("Connecting to Discord.");
             // Configure the client to use a Bot token, and use our token
             await client.LoginAsync(TokenType.User, token);
             // Connect the client to Discord's gateway
             
             
-            //await client.ConnectAsync();
-            await client.StartAsync();
-            do {
-                           
-            }while (  Connected  == false);
-            
+            client.Connected += GotConnected;
+            client.Disconnected += GotDisconnected;
             client.MessageReceived += HandleCommand;
+            
+            await client.StartAsync();
+            Thread.Sleep(200);
+            do {
+                Thread.Sleep(200);
+                //Console.WriteLine(client.ConnectionState.ToString());
+            }while (  client.ConnectionState != ConnectionState.Connected);
             Console.WriteLine("Validating servers and channels");
             foreach (channel record  in config.channels) {
                 var server = client.Guilds.Where(s=>s.Name == record.servername).FirstOrDefault();
@@ -74,15 +75,20 @@ namespace PSSniperDiscordCrawler
 
 public async Task GotConnected()  {
     Connected = true; 
+    Console.WriteLine("Connected");
 }
 
 public async Task GotDisconnected(Exception e)  {
-    Connected = false; 
-            await client.StartAsync();
-            do {
-                           
-            }while (  Connected  == false);
-   
+    if (client.ConnectionState != ConnectionState.Connected) {
+        Connected = false;
+        Console.WriteLine("Disconnected from Discord. Connecting again. "); 
+        await client.StartAsync();
+        Thread.Sleep(200);
+        do {
+            Thread.Sleep(200);
+            //Console.WriteLine(client.ConnectionState.ToString());
+        }while (  client.ConnectionState != ConnectionState.Connected);    
+    }
 }
 
         public async Task HandleCommand(SocketMessage messageParam)

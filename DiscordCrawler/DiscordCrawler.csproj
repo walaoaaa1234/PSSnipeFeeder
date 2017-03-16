@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Discord.Net.Websocket" Version="1.0.0-rc-00614" />
+    <PackageReference Include="Discord.Net.Websocket" Version="1.0.0-rc-00623" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
 
