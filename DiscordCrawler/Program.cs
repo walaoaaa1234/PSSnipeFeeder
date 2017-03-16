@@ -58,11 +58,15 @@ namespace PSSniperDiscordCrawler
                     if (channel !=null) {
                         record.Channelid = channel.Id;
                     } else {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine (String.Format("====>Channel {0} hasn't been found on server {1}",record.channelname,record.servername));
+                        Console.ResetColor();
                     }
 
                 } else {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine (String.Format("==>Server {0} hasn't been found",record.servername));
+                    Console.ResetColor();
                 }
 
             }
@@ -74,21 +78,25 @@ namespace PSSniperDiscordCrawler
     }
 
 public async Task GotConnected()  {
-    Connected = true; 
+    Connected = true;
+    Console.ForegroundColor = ConsoleColor.Green;
     Console.WriteLine("Connected");
+    Console.ResetColor();
 }
 
 public async Task GotDisconnected(Exception e)  {
     if (client.ConnectionState != ConnectionState.Connected) {
         Connected = false;
+        Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Disconnected from Discord. Connecting again. "); 
+        Console.ResetColor();
         //await client.StopAsync();
         //await client.StartAsync();
-        Thread.Sleep(200);
+        /*Thread.Sleep(200);
         do {
             Thread.Sleep(200);
             Console.WriteLine(client.ConnectionState.ToString());
-        }while (  client.ConnectionState != ConnectionState.Connected);  
+        }while (  client.ConnectionState != ConnectionState.Connected);  */
         Connected=true;  
     }
 }
@@ -121,12 +129,16 @@ public async Task GotDisconnected(Exception e)  {
                     double PokemonIV = Convert.ToDouble(m.Groups["IV"].Value,culture);
                     string latitude = m.Groups["latitude"].Value; 
                     string longtitude = m.Groups["longtitude"].Value; 
+                    Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine(String.Format("======> Name: {0} IV {1} Coordinates: {2},{3}" , m.Groups["name"].Value,m.Groups["IV"].Value,m.Groups["latitude"].Value,m.Groups["longtitude"].Value));
+                    Console.ResetColor();
                     bool requestsent = false;
                     foreach (filter filter in configchannel.filters) {
                         if ( PokemonName.Contains(filter.namefilter) & (PokemonIV >= filter.minimumiv) & (!requestsent) ) {
                             string uri = config.PSSniperUrl+String.Format("/addpokemon/pokesniper2://{0}/{1},{2}/{3}", m.Groups["name"].Value,m.Groups["latitude"].Value,m.Groups["longtitude"].Value,m.Groups["IV"].Value);
+                            Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine(String.Format("====================> Calling : {0}",uri));
+                            Console.ResetColor();
                         try {
                             string result="";
                             requestsent = true; 
@@ -141,7 +153,9 @@ public async Task GotDisconnected(Exception e)  {
                         }
                     }
                     if (!requestsent) {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine ("Pokemon hasn't met any of filter for this channel, so skipped");
+                            Console.ResetColor();
                     }
 
                     
