@@ -1,3 +1,5 @@
+MSNIPER.COM website is down. Looks like a permament. So this module/worker doesn't do anything now. 
+
 # Configuration
 
 ##config.json (copy an example file and edit the new file)
