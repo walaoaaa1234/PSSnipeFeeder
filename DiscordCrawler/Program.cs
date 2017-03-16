@@ -82,12 +82,14 @@ public async Task GotDisconnected(Exception e)  {
     if (client.ConnectionState != ConnectionState.Connected) {
         Connected = false;
         Console.WriteLine("Disconnected from Discord. Connecting again. "); 
+        await client.StopAsync();
         await client.StartAsync();
         Thread.Sleep(200);
         do {
             Thread.Sleep(200);
-            //Console.WriteLine(client.ConnectionState.ToString());
-        }while (  client.ConnectionState != ConnectionState.Connected);    
+            Console.WriteLine(client.ConnectionState.ToString());
+        }while (  client.ConnectionState != ConnectionState.Connected);  
+        Connected=true;  
     }
 }
 
